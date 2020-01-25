@@ -14,10 +14,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.core.content.FileProvider.getUriForFile
 
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
 import java.nio.charset.Charset
+import java.security.AccessController.getContext
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
@@ -316,7 +318,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
         println(allObservations)
 
-        saveStringAsFile(allObservations)
+        //saveStringAsFile(allObservations)
 
 
         val fileToWrite : File = saveStringAsFile(allObservations)
@@ -331,7 +333,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                 "The attachement includes the results from the observation."
             )
             email.setType("message/rfc822");
-            email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileToWrite));
+            val contentUri : Uri = getUriForFile(applicationContext,"org.cyclismo.copus.fileprovider",fileToWrite)
+            grantUriPermission("org.cyclismo.copus.fileprovider",contentUri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            email.putExtra(Intent.EXTRA_STREAM, contentUri);
             //email.putExtra(Intent.EXTRA_STREAM, FileInputStream(fileToWrite));
             startActivity(Intent.createChooser(email, "Choose an Email client :"));
         }
@@ -353,7 +357,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
          */
         println("Save string\n ${internalPath.name}")
 
-        val directoryFile: File = File(filesDir,"copus")
+        val directoryFile: File = File(filesDir,"observations")
         if(directoryFile.mkdirs())
         {
             println("Created directories")
@@ -382,36 +386,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     }
 
 
+    /*
     // from https://developer.android.com/training/data-storage/shared/documents-files
-    private fun createFile(pickerInitialUri: Uri) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "text/csv"
-            putExtra(Intent.EXTRA_TITLE, "copus.csv")
-
-            // Optionally, specify a URI for the directory that should be opened in
-            // the system file picker before your app creates the document.
-            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
-        }
-
-        startActivityForResult(intent, 1)
-    }
-
-    fun openFile(pickerInitialUri: Uri) {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "text/csv"
-
-            // Optionally, specify a URI for the file that should appear in the
-            // system file picker when it loads.
-            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
-        }
-
-        startActivityForResult(intent, 2)
-    }
-
-
-
     @Throws(IOException::class)
     private fun readTextFromUri(uri: Uri): String {
         val contentResolver = applicationContext.contentResolver
@@ -427,6 +403,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
         return stringBuilder.toString()
     }
+     */
 
 }
 
