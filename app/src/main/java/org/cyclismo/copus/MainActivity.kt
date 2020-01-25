@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
         for(spinnerBoxID in spinnerBoxIds)
         {
-            val view : Spinner = findViewById(spinnerBoxID) as Spinner
+            val view : Spinner = findViewById<Spinner>(spinnerBoxID)
             this.spinnerBoxViews.put(view,spinnerBoxID)
 
             view.onItemSelectedListener = this@MainActivity
@@ -175,8 +175,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
     override fun onNothingSelected(parent: AdapterView<out Adapter>?)
     {
-        val theSpinner = parent as Spinner
-        this.currentObservation.setEngagementValue(this.spinnerBoxStudentIdentifiers[parent.id] ?: "","")
+        //val theSpinner = parent as Spinner
+        this.currentObservation.setEngagementValue(this.spinnerBoxStudentIdentifiers[parent?.id] ?: "","")
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long)
