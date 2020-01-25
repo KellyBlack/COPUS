@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.ParcelFileDescriptor
 import android.os.SystemClock
 import android.provider.DocumentsContract
 //import android.util.Log
@@ -40,6 +41,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     var checkBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
     var spinnerBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
 
+    private lateinit var requestFileIntent: Intent
+    private lateinit var inputPFD: ParcelFileDescriptor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +53,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             //    .setAction("Action", null).show()
             sendResults(view)
+        }
+
+        requestFileIntent = Intent(Intent.ACTION_PICK).apply {
+            type = "text/csv"
         }
 
         this.startButton = findViewById<Button>(R.id.button)
@@ -172,6 +180,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
              */
         }
+
+
+
 
     }
 
@@ -364,7 +375,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
         else
         {
-            println("Did not create directores")
+            println("Did not create directories")
         }
 
         val fileToWrite : File = File(directoryFile,"copus.csv")
@@ -375,7 +386,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         outputStream.close()
 
 
-        return(File(internalPath,"copus.csv"))
+        return(File(directoryFile,"copus.csv"))
     }
 
     public fun pushCurrentState()
@@ -404,6 +415,57 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         return stringBuilder.toString()
     }
      */
+
+    private fun requestFile() {
+        /**
+         * When the user requests a file, send an Intent to the
+         * server app.
+         * files.
+         */
+        println("Request File")
+        startActivityForResult(requestFileIntent, 0)
+    }
+
+    /*
+     * from https://developer.android.com/training/secure-file-sharing/request-file
+     * When the Activity of the app that hosts files sets a result and calls
+    * finish(), this method is invoked. The returned Intent contains the
+    * content URI of a selected file. The result code indicates if the
+    * selection worked or not.
+    */
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, returnIntent: Intent?)
+    {
+        super.onActivityResult(requestCode,resultCode,returnIntent)
+        // If the selection didn't work
+        if (resultCode != Activity.RESULT_OK) {
+            // Exit without doing anything else
+            return
+        }
+        // Get the file's content URI from the incoming Intent
+        returnIntent!!.data?.also { returnUri ->
+            /*
+             * Try to open the file for "read" access using the
+             * returned URI. If the file isn't found, write to the
+             * error log and return.
+             */
+            inputPFD = try {
+                /*
+                 * Get the content resolver instance for this context, and use it
+                 * to get a ParcelFileDescriptor for the file.
+                 */
+                contentResolver.openFileDescriptor(returnUri, "r")!!
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+                //Log.e("MainActivity", "File not found.")
+                println("File not found.")
+                return
+            }
+
+            // Get a regular file descriptor for the file
+            val fd = inputPFD.fileDescriptor
+
+        }
+    }
 
 }
 
