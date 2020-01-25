@@ -27,7 +27,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/COPUS_Name" />
+            android:text="" />
 
         <View
             android:id="@+id/divider2"
