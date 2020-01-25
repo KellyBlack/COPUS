@@ -8,13 +8,453 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <LinearLayout
+        android:layout_width="414dp"
+        android:layout_height="677dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/COPUS_Name" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/black" />
+
+        <Chronometer
+            android:id="@+id/TimeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5pt"
+            android:layout_marginLeft="5pt"
+            android:layout_marginTop="5pt"
+            android:layout_marginRight="5pt"
+            android:layout_marginBottom="5pt"
+            android:layout_weight="0"
+            android:height="34sp"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="startButton"
+            android:text="@string/Timer_Start" />
+
+        <TableLayout
+            android:id="@+id/mainTableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="top"
+            android:paddingLeft="5pt"
+            android:paddingRight="5pt"
+            android:stretchColumns="0,.5,1">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/lecturerTextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Lecturer_Title" />
+
+                <TextView
+                    android:id="@+id/studentsTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Students_Title" />
+
+                <TextView
+                    android:id="@+id/engagementTextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Engagement_Title" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/lecturingCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/Lecturing_Checkbox"
+                    android:linksClickable="false"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Lecturing_Checkbox" />
+
+
+                <CheckBox
+                    android:id="@+id/studentListeningCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Listening_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/ListeningSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/rtwCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/RtW_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/individualCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Independent_Thinking_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/ThinkingSpinnerind"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/fupCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Follow_Up_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/cgCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/CG_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/CGSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/pqCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/PQ_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/wgCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Group_Work_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/groupWorkSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/cqCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/CQ_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/ogCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Other_Group_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/ogSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/anqCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Teacher_AnQ_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/studentAnswerCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Student_AnQ_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/ANQSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/mgCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Moving_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/sqCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/SQ_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/SQSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/oneOnOneCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/OneOnOne_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/wcCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/WC_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/WCspinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/dvCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Demo_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/prdCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Prd_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/PRDspinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/adminCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Admin_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/spCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/SP_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/SPSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/waitingCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Teacher_Waiting_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/tqCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Test_Quiz_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/TQSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/otherCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Teacher_Other_Checkbox" />
+
+                <CheckBox
+                    android:id="@+id/studentwaitingCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Student_Waiting_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/waitingSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Space />
+
+                <CheckBox
+                    android:id="@+id/studentotherCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="lecturingClick"
+                    android:text="@string/Student_Other_Checkbox" />
+
+                <Spinner
+                    android:id="@+id/otherSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4pt"
+                    android:entries="@array/student_engagement_options"
+                    android:prompt="@string/studentEngagement" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="clickCOPUSurl"
+            android:text="@string/COPUS_URL_MESSAGE"
+            android:textStyle="italic" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

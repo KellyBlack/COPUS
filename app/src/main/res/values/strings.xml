@@ -1,4 +1,50 @@
 <resources>
     <string name="app_name">COPUS</string>
     <string name="action_settings">Settings</string>
+
+    <string name="COPUS_Name">COPUS</string>
+    <string name="Lecturer_Title">Instructor:</string>
+    <string name="Students_Title">Students:</string>
+    <string name="Engagement_Title">Engagement:</string>
+    <string name="COPUS_URL_MESSAGE">Open http://www.cwsei.ubc.ca/resources/COPUS.htm</string>
+    <string name="COPUS_URL">http://www.cwsei.ubc.ca/resources/COPUS.htm</string>
+
+    <string name="RtW_Checkbox">RtW</string>
+    <string name="Listening_Checkbox">Listening</string>
+    <string name="Lecturing_Checkbox">Lecturing</string>
+    <string name="Independent_Thinking_Checkbox">Ind. Thinking</string>
+    <string name="Follow_Up_Checkbox">Follow Up</string>
+    <string name="CG_Checkbox">CG</string>
+    <string name="PQ_Checkbox">PQ</string>
+    <string name="Group_Work_Checkbox">Group Work</string>
+    <string name="Other_Group_Checkbox">Other Group</string>
+    <string name="CQ_Checkbox">CQ</string>
+    <string name="Student_AnQ_Checkbox">AnQ</string>
+    <string name="Teacher_AnQ_Checkbox">AnQ</string>
+    <string name="SQ_Checkbox">SQ</string>
+    <string name="Moving_Checkbox">Moving</string>
+    <string name="WC_Checkbox">WC</string>
+    <string name="OneOnOne_Checkbox">1o1</string>
+    <string name="Prd_Checkbox">Prd</string>
+    <string name="Demo_Checkbox">D/V</string>
+    <string name="SP_Checkbox">SP</string>
+    <string name="Admin_Checkbox">Admin</string>
+    <string name="Test_Quiz_Checkbox">Test/Quiz</string>
+    <string name="Teacher_Waiting_Checkbox">Waiting</string>
+    <string name="Student_Waiting_Checkbox">Waiting</string>
+    <string name="Teacher_Other_Checkbox">Other</string>
+    <string name="Student_Other_Checkbox">Other</string>
+
+    <string name="Timer_Start">Start</string>
+    <string name="Timer_End">Stop</string>
+    <string name="Time_Stamp_Label">Time: %s</string>
+
+    <string name="studentEngagement">Engagement</string>
+    <string-array name="student_engagement_options">
+        <item></item>
+        <item>High</item>
+        <item>Medium</item>
+        <item>Low</item>
+    </string-array>
+
 </resources>
