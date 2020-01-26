@@ -239,53 +239,20 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     fun lecturingClick(view : View)
     {
         if(view is CheckBox) {
-            println("View: ${view.id} ${view.isChecked}")
             val checkValue : Boolean = view.isChecked
             if(checkBoxLecturerIdentifiers.containsKey(view.id))
             {
-                println("This is a lecturer check box")
                 currentObservation.setLecturerValue(checkBoxLecturerIdentifiers[view.id] ?: "",checkValue)
             }
             else if (checkBoxStudentIdentifiers.containsKey(view.id))
             {
-                println("This is a student check box")
                 currentObservation.setStudentValue(checkBoxStudentIdentifiers[view.id] ?: "",checkValue)
             }
-            /*
-            when (view.id) {
-                R.id.lecturingCheckbox -> println("Lecture checkbox")
-                R.id.rtwCheckbox       -> println("Writing on board")
-                R.id.fupCheckbox       -> println("Asking follow up question")
-                R.id.pqCheckbox        -> println("Post question")
-                R.id.cqCheckbox        -> println("Check question")
-                R.id.anqCheckbox       -> println("Answer question")
-                R.id.mgCheckbox        -> println("Moving around")
-                R.id.oneOnOneCheckbox  -> println("One on one questions")
-                R.id.dvCheckbox        -> println("Demo/Video")
-                R.id.adminCheckbox     -> println("administrative activities")
-                R.id.waitingCheckbox   -> println("Waiting for response")
-                R.id.otherCheckbox     -> println("Other")
-                R.id.studentListeningCheckbox -> println("student listening")
-                R.id.individualCheckbox       -> println("individual")
-                R.id.cgCheckbox        -> println("cg")
-                R.id.wgCheckbox        -> println("wg")
-                R.id.ogCheckbox        -> println("og")
-                R.id.studentAnswerCheckbox    -> println("student answer")
-                R.id.sqCheckbox        -> println("sq")
-                R.id.wcCheckbox        -> println("wc")
-                R.id.prdCheckbox       -> println("prd")
-                R.id.spCheckbox        -> println("sp")
-                R.id.tqCheckbox        -> println("test quiz")
-                R.id.studentwaitingCheckbox -> println("student waiting")
-                R.id.studentotherCheckbox   -> println("student Other")
-            }
-            */
         }
     }
 
     fun engagementClick(view:View)
     {
-        println("Engagement : ")
     }
 
     fun clickCOPUSurl(view: View)
@@ -297,7 +264,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     fun startButton(view: View)
     {
         if(view is Button) {
-            println("This is the start button ${view.text}")
             val counter: Chronometer = findViewById(R.id.TimeView)
             if (view.text == "Start")
             {
@@ -371,16 +337,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     {
         //openFileOutput
         var internalPath : File = filesDir
-        println("Save string\n ${internalPath.name}")
 
         val directoryFile: File = File(filesDir,"observations")
         if(directoryFile.mkdirs())
         {
-            println("Created directories")
         }
         else
         {
-            println("Did not create directories")
         }
 
         val fileToWrite : File = File(directoryFile,"copus.csv")

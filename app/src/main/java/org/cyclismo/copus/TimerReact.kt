@@ -20,7 +20,6 @@ class TimerReact(val parentActivity:MainActivity) : Chronometer.OnChronometerTic
             {
                 numberIntervals += 1
                 parentActivity.pushCurrentState()
-                println("Turn over baby, $numberIntervals")
             }
         }
     }

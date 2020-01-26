@@ -97,7 +97,6 @@ class PeriodicUpdate
 
     constructor()
     {
-        //println("Starting up PeriodicUpdate")
         this.running = false
         clearAllValues()
     }
@@ -126,13 +125,11 @@ class PeriodicUpdate
     fun runTimer(period:Int=100)
     {
         this.running = true;
-        println("run timer ${this.running}")
     }
 
     fun stopTimer(period:Int=100)
     {
         this.running = false;
-        println("stop timer ${this.running}")
     }
 
     fun getLecturerValue(keyValue : String) : Boolean
@@ -149,7 +146,6 @@ class PeriodicUpdate
         if(lecturerCode.containsKey(keyValue))
         {
             lecturerCode.set(keyValue,newValue)
-            println("Set lecture code ${keyValue} to ${newValue}")
             return(true)
         }
         return(false)
@@ -168,7 +164,6 @@ class PeriodicUpdate
     {
         if(studentCode.containsKey(keyValue))
         {
-            println("Set student code ${keyValue} to ${newValue}")
             studentCode.set(keyValue,newValue)
             return(true)
         }
@@ -189,7 +184,6 @@ class PeriodicUpdate
         if(studentEngagement.containsKey(keyValue))
         {
             studentEngagement.set(keyValue,newValue)
-            println("Set student engagement code ${keyValue} to ${newValue}")
             return(true)
         }
         return(false)
