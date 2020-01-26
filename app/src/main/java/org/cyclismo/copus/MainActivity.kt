@@ -19,6 +19,7 @@ import androidx.core.content.FileProvider.getUriForFile
 
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
+import java.lang.IllegalArgumentException
 import java.nio.charset.Charset
 import java.security.AccessController.getContext
 
@@ -231,6 +232,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                 spinnerBox.setSelection(0)
         }
 
+        this.currentObservation.clearAllValues()
+
     }
 
     fun lecturingClick(view : View)
@@ -296,7 +299,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         if(view is Button) {
             println("This is the start button ${view.text}")
             val counter: Chronometer = findViewById(R.id.TimeView)
-            if (view.text == "Start") {
+            if (view.text == "Start")
+            {
+                this.pastObservations.clear()
                 clearAllCheckboxes()
                 view.text = getString(R.string.Timer_End)
                 this.currentObservation.runTimer(10)
@@ -306,7 +311,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                 counter.start()
                 //counter.onChronometerTickListener = object: TimerReact
                 counter.setOnChronometerTickListener(TimerReact(this))
-            } else {
+            }
+            else
+            {
                 clearAllCheckboxes()
                 pushCurrentState()
                 view.text = getString(R.string.Timer_Start)
@@ -327,14 +334,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         {
             allObservations += pastObs.convertToString() + "\n"
         }
-        println(allObservations)
-
-        //saveStringAsFile(allObservations)
-
 
         val fileToWrite : File = saveStringAsFile(allObservations)
-        println("File to attach: ${fileToWrite.name}")
-
         if(fileToWrite!=null)
         {
             var email = Intent(Intent.ACTION_SEND)
@@ -344,11 +345,24 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                 "The attachement includes the results from the observation."
             )
             email.setType("message/rfc822");
-            val contentUri : Uri = getUriForFile(applicationContext,"org.cyclismo.copus.fileprovider",fileToWrite)
-            grantUriPermission("org.cyclismo.copus.fileprovider",contentUri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            email.putExtra(Intent.EXTRA_STREAM, contentUri);
-            //email.putExtra(Intent.EXTRA_STREAM, FileInputStream(fileToWrite));
-            startActivity(Intent.createChooser(email, "Choose an Email client :"));
+            try {
+                val contentUri: Uri = getUriForFile(
+                    applicationContext,
+                    "org.cyclismo.copus.fileprovider",
+                    fileToWrite
+                )
+                grantUriPermission(
+                    "org.cyclismo.copus.fileprovider",
+                    contentUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                email.putExtra(Intent.EXTRA_STREAM, contentUri);
+                startActivity(Intent.createChooser(email, "Choose an Email client :"));
+            }
+            catch (e : IllegalArgumentException)
+            {
+                //println(e)
+            }
         }
 
     }
@@ -357,15 +371,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     {
         //openFileOutput
         var internalPath : File = filesDir
-        /*
-        if(TESTING)
-        {
-            internalPath = File("/tmp/copus/files")
-        }
-        else {
-            internalPath = filesDir
-        }
-         */
         println("Save string\n ${internalPath.name}")
 
         val directoryFile: File = File(filesDir,"observations")
@@ -384,7 +389,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         outputStream.write(contents.toByteArray(Charset.defaultCharset()),0,contents.length)
         outputStream.flush()
         outputStream.close()
-
 
         return(File(directoryFile,"copus.csv"))
     }
@@ -422,7 +426,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
          * server app.
          * files.
          */
-        println("Request File")
         startActivityForResult(requestFileIntent, 0)
     }
 
@@ -457,7 +460,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
                 //Log.e("MainActivity", "File not found.")
-                println("File not found.")
                 return
             }
 
