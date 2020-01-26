@@ -3,14 +3,16 @@ package org.cyclismo.copus
 import android.os.SystemClock
 import android.widget.Chronometer
 
-class TimerReact(val parentActivity:MainActivity) : Chronometer.OnChronometerTickListener
+class TimerReact(private val parentActivity:MainActivity) : Chronometer.OnChronometerTickListener
 {
-    var numberIntervals : Long = 1
+    private var numberIntervals : Long = 1
 
+    /*
     init
     {
 
     }
+     */
 
 
     override fun onChronometerTick(chronometer: Chronometer?) {

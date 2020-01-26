@@ -41,7 +41,7 @@ import kotlin.math.abs
 class PeriodicUpdate
 {
 
-    private var running : Boolean = false;
+    private var running : Boolean = false
     public var startTime : Long = 0
 
     private val lecturerCode : MutableMap<String,Boolean> =
@@ -103,11 +103,11 @@ class PeriodicUpdate
 
     fun clearAllValues()
     {
-        for((keyValue,value) in lecturerCode)
+        for((keyValue,_) in lecturerCode)
         {
             lecturerCode.set(keyValue,false)
         }
-        for((keyValue,value) in studentCode)
+        for((keyValue,_) in studentCode)
         {
             studentCode.set(keyValue,false)
         }
@@ -129,7 +129,7 @@ class PeriodicUpdate
 
     fun stopTimer(period:Int=100)
     {
-        this.running = false;
+        this.running = false
     }
 
     fun getLecturerValue(keyValue : String) : Boolean
@@ -192,15 +192,15 @@ class PeriodicUpdate
     public fun convertToString() : String
     {
         var allValues : String = ""
-        for((key,value) in lecturerCode)
+        for((_,value) in lecturerCode)
         {
             allValues += "$value,"
         }
-        for((key,value) in studentCode)
+        for((_,value) in studentCode)
         {
             allValues += "$value,"
         }
-        for((key,value) in studentEngagement)
+        for((_,value) in studentEngagement)
         {
             allValues += "$value,"
         }
@@ -211,15 +211,15 @@ class PeriodicUpdate
     public fun headerToString() : String
     {
         var allValues : String = ""
-        for((key,value) in lecturerCode)
+        for((key,_) in lecturerCode)
         {
             allValues += "$key,"
         }
-        for((key,value) in studentCode)
+        for((key,_) in studentCode)
         {
             allValues += "$key,"
         }
-        for((key,value) in studentEngagement)
+        for((key,_) in studentEngagement)
         {
             allValues += "engagement_$key,"
         }

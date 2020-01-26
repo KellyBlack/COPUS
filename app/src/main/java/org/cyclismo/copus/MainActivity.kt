@@ -26,21 +26,20 @@ import java.security.AccessController.getContext
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 {
-    val TESTING: Boolean = true
 
-    var currentObservation : PeriodicUpdate = PeriodicUpdate()
-    var pastObservations : MutableList<PeriodicUpdate> = mutableListOf<PeriodicUpdate>()
-    var startButton : Button? = null
+    private var currentObservation : PeriodicUpdate = PeriodicUpdate()
+    private var pastObservations : MutableList<PeriodicUpdate> = mutableListOf<PeriodicUpdate>()
+    private var startButton : Button? = null
 
-    var checkBoxIDs = arrayOf<Int>()
-    var spinnerBoxIds = arrayOf<Int>()
+    private var checkBoxIDs = arrayOf<Int>()
+    private var spinnerBoxIds = arrayOf<Int>()
 
-    var checkBoxViews : MutableMap<View,Int> = mutableMapOf<View,Int>()
-    var spinnerBoxViews : MutableMap<View,Int> = mutableMapOf<View,Int>()
+    private var checkBoxViews : MutableMap<View,Int> = mutableMapOf<View,Int>()
+    private var spinnerBoxViews : MutableMap<View,Int> = mutableMapOf<View,Int>()
 
-    var checkBoxLecturerIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
-    var checkBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
-    var spinnerBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
+    private var checkBoxLecturerIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
+    private var checkBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
+    private var spinnerBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
 
     private lateinit var requestFileIntent: Intent
     private lateinit var inputPFD: ParcelFileDescriptor
@@ -215,7 +214,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
     }
 
-    fun clearAllCheckboxes()
+    private fun clearAllCheckboxes()
     {
 
         for(checkboxID in checkBoxIDs)
@@ -236,7 +235,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
     }
 
-    fun lecturingClick(view : View)
+    private fun lecturingClick(view : View)
     {
         if(view is CheckBox) {
             val checkValue : Boolean = view.isChecked
@@ -251,17 +250,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
     }
 
-    fun engagementClick(view:View)
-    {
-    }
-
-    fun clickCOPUSurl(view: View)
+    private fun clickCOPUSurl(view: View)
     {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.COPUS_URL)))
         startActivity(browserIntent)
     }
 
-    fun startButton(view: View)
+    private fun startButton(view: View)
     {
         if(view is Button) {
             val counter: Chronometer = findViewById(R.id.TimeView)
@@ -289,7 +284,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
     }
 
-    fun sendResults(view: View)
+    private fun sendResults(view: View)
     {
 
         var allObservations : String = ""
@@ -333,11 +328,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
     }
 
-    fun saveStringAsFile(contents:String) : File
+    private fun saveStringAsFile(contents:String) : File
     {
-        //openFileOutput
-        var internalPath : File = filesDir
-
         val directoryFile: File = File(filesDir,"observations")
         if(directoryFile.mkdirs())
         {
@@ -427,7 +419,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             }
 
             // Get a regular file descriptor for the file
-            val fd = inputPFD.fileDescriptor
+            //val fd = inputPFD.fileDescriptor
 
         }
     }
