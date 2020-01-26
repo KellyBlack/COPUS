@@ -1,5 +1,8 @@
 package org.cyclismo.copus
 
+//import android.util.Log
+//import com.google.android.material.snackbar.Snackbar
+
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -7,21 +10,18 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.os.SystemClock
-import android.provider.DocumentsContract
-//import android.util.Log
-//import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider.getUriForFile
-
+import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.*
-import java.lang.IllegalArgumentException
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.nio.charset.Charset
-import java.security.AccessController.getContext
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
@@ -181,9 +181,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
              */
         }
 
-
-
-
     }
 
     override fun onNothingSelected(parent: AdapterView<out Adapter>?)
@@ -209,7 +206,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings ->
+            {
+                println("Settings")
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -299,8 +301,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         val fileToWrite : File = saveStringAsFile(allObservations)
         if(fileToWrite!=null)
         {
+            val settings  = PreferenceManager.getDefaultSharedPreferences(this)
+            val toAddress : String = settings.getString("defaultEmailTo","") ?: ""
+            println(toAddress)
             var email = Intent(Intent.ACTION_SEND)
             email.putExtra(Intent.EXTRA_SUBJECT, "COPUS Observation")
+            email.putExtra(Intent.EXTRA_EMAIL,arrayOf(toAddress))
             email.putExtra(
                 Intent.EXTRA_TEXT,
                 "The attachement includes the results from the observation."

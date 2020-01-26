@@ -46,5 +46,13 @@
         <item>Medium</item>
         <item>Low</item>
     </string-array>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+
+    <!-- Messages Preferences -->
+    <string name="default_to_title">Default Email To Address</string>
+
 
 </resources>
