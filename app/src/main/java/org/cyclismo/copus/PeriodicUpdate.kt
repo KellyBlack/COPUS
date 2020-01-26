@@ -213,11 +213,11 @@ class PeriodicUpdate
         var allValues : String = ""
         for((key,_) in lecturerCode)
         {
-            allValues += "$key,"
+            allValues += "lecturer_$key,"
         }
         for((key,_) in studentCode)
         {
-            allValues += "$key,"
+            allValues += "student_$key,"
         }
         for((key,_) in studentEngagement)
         {

@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
     }
 
-    private fun clearAllCheckboxes()
+    public fun clearAllCheckboxes()
     {
 
         for(checkboxID in checkBoxIDs)
@@ -235,7 +235,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
     }
 
-    private fun lecturingClick(view : View)
+    public fun lecturingClick(view : View)
     {
         if(view is CheckBox) {
             val checkValue : Boolean = view.isChecked
@@ -250,13 +250,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
     }
 
-    private fun clickCOPUSurl(view: View)
+    public fun clickCOPUSurl(view: View)
     {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.COPUS_URL)))
         startActivity(browserIntent)
     }
 
-    private fun startButton(view: View)
+    public fun startButton(view: View)
     {
         if(view is Button) {
             val counter: Chronometer = findViewById(R.id.TimeView)
@@ -284,7 +284,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         }
     }
 
-    private fun sendResults(view: View)
+    public fun sendResults(view: View)
     {
 
         var allObservations : String = ""
@@ -375,7 +375,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     }
      */
 
-    private fun requestFile() {
+    public fun requestFile() {
         /**
          * When the user requests a file, send an Intent to the
          * server app.
