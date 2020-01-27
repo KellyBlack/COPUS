@@ -13,6 +13,7 @@ import android.os.SystemClock
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider.getUriForFile
@@ -278,6 +279,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                 counter.start()
                 //counter.onChronometerTickListener = object: TimerReact
                 counter.setOnChronometerTickListener(TimerReact(this))
+                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
             else
             {
@@ -286,6 +288,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                 view.text = getString(R.string.Timer_Start)
                 this.currentObservation.stopTimer(10)
                 counter.stop()
+                window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
         }
     }
