@@ -208,8 +208,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         return when (item.itemId) {
             R.id.action_settings ->
             {
-                println("Settings")
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                true
+            }
+            R.id.action_about ->
+            {
+                startActivity(Intent(this@MainActivity, AboutActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
