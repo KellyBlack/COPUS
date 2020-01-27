@@ -303,8 +303,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         {
             val settings  = PreferenceManager.getDefaultSharedPreferences(this)
             val toAddress : String = settings.getString("defaultEmailTo","") ?: ""
-            println(toAddress)
-            var email = Intent(Intent.ACTION_SEND)
+            val email = Intent(Intent.ACTION_SEND)
             email.putExtra(Intent.EXTRA_SUBJECT, "COPUS Observation")
             email.putExtra(Intent.EXTRA_EMAIL,arrayOf(toAddress))
             email.putExtra(
