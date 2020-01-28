@@ -220,6 +220,10 @@ class MainActivity : AppCompatActivity(),
                 startActivity(Intent(this@MainActivity, AboutActivity::class.java))
                 true
             }
+            R.id.action_help ->
+            {
+
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
