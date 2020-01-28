@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 
 //import androidx.appcompat.app.ActionBar
 
@@ -16,6 +18,13 @@ class HelpActivity : AppCompatActivity() {
         if(toolBar != null)
         {
             toolBar.setDisplayHomeAsUpEnabled(true)
+        }
+
+        val myHelpText =  findViewById<TextView>(R.id.helpText)
+        if(myHelpText != null)
+        {
+            val helpMessage = HtmlCompat.fromHtml(getString(R.string.help_page),HtmlCompat.FROM_HTML_MODE_COMPACT)
+            myHelpText.setText(helpMessage.toString())
         }
     }
 

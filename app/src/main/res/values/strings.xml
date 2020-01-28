@@ -66,6 +66,15 @@
 
     <!-- Strings for the help screen 0-->
     <string name="help_title_bar">Help</string>
-    <string name="help_page"><p>Based on the COPUS protocol</p><p>How to operate:</p><ul><li>Click</li><li>Click</li><li>Send</li></ul></string>
+    <string name="help_page"><![CDATA[
+        <p>Based on the COPUS protocol</p><br/>
+        <p>How to operate:</p><br/>
+        <ul>
+            <li>Click</li>
+            <li>Click</li>
+            <li>Send</li>
+        </ul>
+        ]]>
+    </string>
 
 </resources>
