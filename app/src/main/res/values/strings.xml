@@ -64,4 +64,7 @@
     <string name="delete_current_observation">Delete and Proceed</string>
     <string name="cancel_delete_observation">Cancel</string>
 
+    <!-- Strings for the help screen 0-->
+    <string name="help_title_bar">Help</string>
+
 </resources>
