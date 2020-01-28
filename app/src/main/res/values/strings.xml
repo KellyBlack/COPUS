@@ -55,8 +55,12 @@
     <!-- Messages Preferences -->
     <string name="default_to_title">Default Email To Address</string>
 
-    <string name="about_details">An implementation of the COPUS protocoal by Smith, Jones, Gilbert, and Wieman. More details can be found at http://www.cwsei.ubc.ca/resources/COPUS.htm \n\n\nWritten by Kelly Black, Department of Mathematics, University of Georgia.</string>
+    <string name="about_details">An implementation of the COPUS protocoal by Smith, Jones, Gilbert, and Wieman. More details can be found at <u>http://www.cwsei.ubc.ca/resources/COPUS.htm</u> \n\n\nWritten by Kelly Black, Department of Mathematics, University of Georgia.</string>
     <string name="about_back">Back</string>
 
+    <!-- strings for the dialog to confirm whether or not to delete the current observation -->
+    <string name="ask_delete_current_observation">This will delete the current observation. Do you want to continue?</string>
+    <string name="delete_current_observation">Delete and Proceed</string>
+    <string name="cancel_delete_observation">Cancel</string>
 
 </resources>

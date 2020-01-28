@@ -17,6 +17,7 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider.getUriForFile
+import androidx.fragment.app.DialogFragment
 import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -25,7 +26,9 @@ import java.io.FileOutputStream
 import java.nio.charset.Charset
 
 
-class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
+class MainActivity : AppCompatActivity(),
+    AdapterView.OnItemSelectedListener,
+    ConfirmDeleteCurrentObservation.DeleteNoticeDialogListener
 {
 
     private var currentObservation : PeriodicUpdate = PeriodicUpdate()
@@ -263,23 +266,46 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         startActivity(browserIntent)
     }
 
+    override fun onDeleteObservationAndProceed(dialog: DialogFragment?)
+    {
+        val view = findViewById<Button>(R.id.button)
+        val counter: Chronometer = findViewById<Chronometer>(R.id.TimeView)
+        this.pastObservations.clear()
+        clearAllCheckboxes()
+        view.text = getString(R.string.Timer_End)
+        this.currentObservation.runTimer(10)
+        counter.format = getString(R.string.Time_Stamp_Label)
+        counter.base = SystemClock.elapsedRealtime()
+        this.currentObservation.startTime = counter.base
+        counter.start()
+        //counter.onChronometerTickListener = object: TimerReact
+        counter.setOnChronometerTickListener(TimerReact(this))
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+    }
+
+    override fun onDeleteObservationCanel(dialog : DialogFragment?)
+    {
+        // User clicked on the cancel button. Haco nada
+    }
+
     public fun startButton(view: View)
     {
         if(view is Button) {
             val counter: Chronometer = findViewById(R.id.TimeView)
             if (view.text == "Start")
             {
-                this.pastObservations.clear()
-                clearAllCheckboxes()
-                view.text = getString(R.string.Timer_End)
-                this.currentObservation.runTimer(10)
-                counter.format = getString(R.string.Time_Stamp_Label)
-                counter.base = SystemClock.elapsedRealtime()
-                this.currentObservation.startTime = counter.base
-                counter.start()
-                //counter.onChronometerTickListener = object: TimerReact
-                counter.setOnChronometerTickListener(TimerReact(this))
-                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                if(this.pastObservations.size > 0)
+                {
+                    val confirmDelete = ConfirmDeleteCurrentObservation()
+                    val fragmentManager = supportFragmentManager
+                    confirmDelete.show(fragmentManager, "deleteCurrentObservation")
+                }
+                else
+                {
+                    onDeleteObservationAndProceed(null)
+                }
+
             }
             else
             {
