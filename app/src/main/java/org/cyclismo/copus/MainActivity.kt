@@ -56,12 +56,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             sendResults(view)
         }
 
-        requestFileIntent = Intent(Intent.ACTION_PICK).apply {
+        this.requestFileIntent = Intent(Intent.ACTION_PICK).apply {
             type = "text/csv"
         }
 
         this.startButton = findViewById<Button>(R.id.button)
-        currentObservation.clearAllValues()
+        this.currentObservation.clearAllValues()
         clearAllCheckboxes()
 
         this.checkBoxIDs = arrayOf(
@@ -155,12 +155,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             R.id.otherSpinner to "O"
         )
 
-        for(checkBoxID in checkBoxIDs)
+        for(checkBoxID in this.checkBoxIDs)
         {
             this.checkBoxViews.put(findViewById(checkBoxID),checkBoxID)
         }
 
-        for(spinnerBoxID in spinnerBoxIds)
+        for(spinnerBoxID in this.spinnerBoxIds)
         {
             val view : Spinner = findViewById<Spinner>(spinnerBoxID)
             this.spinnerBoxViews.put(view,spinnerBoxID)
@@ -224,14 +224,14 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     public fun clearAllCheckboxes()
     {
 
-        for(checkboxID in checkBoxIDs)
+        for(checkboxID in this.checkBoxIDs)
         {
             val checkbox : CheckBox = findViewById<CheckBox>(checkboxID)
             if(checkbox != null)
                 checkbox.isChecked = false
         }
 
-        for(spinnerBoxID in spinnerBoxIds)
+        for(spinnerBoxID in this.spinnerBoxIds)
         {
             val spinnerBox : Spinner = findViewById<Spinner>(spinnerBoxID)
             if(spinnerBox != null)
@@ -246,13 +246,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     {
         if(view is CheckBox) {
             val checkValue : Boolean = view.isChecked
-            if(checkBoxLecturerIdentifiers.containsKey(view.id))
+            if(this.checkBoxLecturerIdentifiers.containsKey(view.id))
             {
-                currentObservation.setLecturerValue(checkBoxLecturerIdentifiers[view.id] ?: "",checkValue)
+                this.currentObservation.setLecturerValue(this.checkBoxLecturerIdentifiers[view.id] ?: "",checkValue)
             }
-            else if (checkBoxStudentIdentifiers.containsKey(view.id))
+            else if (this.checkBoxStudentIdentifiers.containsKey(view.id))
             {
-                currentObservation.setStudentValue(checkBoxStudentIdentifiers[view.id] ?: "",checkValue)
+                this.currentObservation.setStudentValue(this.checkBoxStudentIdentifiers[view.id] ?: "",checkValue)
             }
         }
     }
@@ -298,7 +298,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
         var allObservations : String = ""
         if(this.pastObservations.size>0)
-            allObservations = pastObservations.first().headerToString() + "\n"
+            allObservations = this.pastObservations.first().headerToString() + "\n"
 
         for(pastObs in this.pastObservations)
         {
@@ -393,7 +393,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
          * server app.
          * files.
          */
-        startActivityForResult(requestFileIntent, 0)
+        startActivityForResult(this.requestFileIntent, 0)
     }
 
     /*
@@ -418,7 +418,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
              * returned URI. If the file isn't found, write to the
              * error log and return.
              */
-            inputPFD = try {
+            this.inputPFD = try {
                 /*
                  * Get the content resolver instance for this context, and use it
                  * to get a ParcelFileDescriptor for the file.
