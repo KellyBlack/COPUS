@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 
 class AboutActivity : AppCompatActivity()
@@ -13,12 +14,23 @@ class AboutActivity : AppCompatActivity()
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
+        val toolBar = supportActionBar
+        if(toolBar != null)
+        {
+            toolBar.setDisplayHomeAsUpEnabled(true)
+        }
     }
 
-    fun onButtonClick(view: View)
-    {
-        onBackPressed()
+    override public fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==android.R.id.home)
+        {
+            //NavUtils.navigateUpFromSameTask(this)
+            onBackPressed()
+            return(true)
+        }
+        return super.onOptionsItemSelected(item)
     }
+
 
     fun onTextViewClick(view: View)
     {
