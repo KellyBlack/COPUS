@@ -189,20 +189,26 @@ class PeriodicUpdate
         return(false)
     }
 
-    public fun convertToString() : String
+    public fun convertToString(period:Int) : String
     {
-        var allValues : String = ""
+        var allValues : String = "$period"
         for((_,value) in lecturerCode)
         {
-            allValues += "$value,"
+            if(value)
+                allValues += ",1"
+            else
+                allValues += ",0"
         }
         for((_,value) in studentCode)
         {
-            allValues += "$value,"
+            if(value)
+                allValues += ",1"
+            else
+                allValues += ",0"
         }
         for((_,value) in studentEngagement)
         {
-            allValues += "$value,"
+            allValues += ",$value"
         }
         return(allValues)
 
@@ -210,18 +216,18 @@ class PeriodicUpdate
 
     public fun headerToString() : String
     {
-        var allValues : String = ""
+        var allValues : String = "period"
         for((key,_) in lecturerCode)
         {
-            allValues += "lecturer_$key,"
+            allValues += ",lecturer_$key"
         }
         for((key,_) in studentCode)
         {
-            allValues += "student_$key,"
+            allValues += ",student_$key"
         }
         for((key,_) in studentEngagement)
         {
-            allValues += "engagement_$key,"
+            allValues += ",engagement_$key"
         }
         return(allValues)
 

@@ -21,7 +21,7 @@ class TimerReact(private val parentActivity:MainActivity) : Chronometer.OnChrono
         if(chronometer != null) {
             var nextTimeCheck : Long = 120000*numberIntervals
             if(TESTING)
-                nextTimeCheck = 15000*numberIntervals
+                nextTimeCheck = 10000*numberIntervals
 
             if (SystemClock.elapsedRealtime() - chronometer.base > nextTimeCheck)
             {

@@ -341,9 +341,11 @@ class MainActivity : AppCompatActivity(),
         if(this.pastObservations.size>0)
             allObservations = this.pastObservations.first().headerToString() + "\n"
 
+        var period : Int = 0
         for(pastObs in this.pastObservations)
         {
-            allObservations += pastObs.convertToString() + "\n"
+            period += 1
+            allObservations += pastObs.convertToString(period) + "\n"
         }
 
         val fileToWrite : File = saveStringAsFile(allObservations)
