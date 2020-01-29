@@ -304,7 +304,7 @@ class MainActivity : AppCompatActivity(),
     {
         if(view is Button) {
             val counter: Chronometer = findViewById(R.id.TimeView)
-            if (view.text == "Start")
+            if (view.text == getString(R.string.Timer_Start))
             {
                 if(this.pastObservations.size > 0)
                 {
@@ -320,11 +320,11 @@ class MainActivity : AppCompatActivity(),
             }
             else
             {
-                clearAllCheckboxes()
                 pushCurrentState()
                 view.text = getString(R.string.Timer_Start)
                 this.currentObservation.stopTimer(10)
                 counter.stop()
+                clearAllCheckboxes()
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
                 val stopTimerNotice = StopTimerDialog()
