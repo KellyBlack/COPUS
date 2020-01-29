@@ -71,13 +71,23 @@
     <!-- Strings for the help screen 0-->
     <string name="help_title_bar">Help</string>
     <string name="help_page"><![CDATA[
-        <p>Based on the COPUS protocol</p><br/>
+        <p>
+        The options and layout are to aid in implementing an observation based on the COPUS protocol.
+        The basic idea is that you start the timer, record the observations, and stop the timer.
+        Before starting the timer again you have to send the last observation using email so that
+        the observations can be saved.
+        </p><br/>
         <p>How to operate:</p><br/>
-        <ul>
-            <li>Click</li>
-            <li>Click</li>
-            <li>Send</li>
-        </ul>
+        <ol>
+            <li>Click the start button to begin the timer.</li>
+            <li>While the timer is on touch the checkboxes coresponding to the activities you observe.</li>
+            <li>Every two minutes the checkboxes are saved, cleared, and the cycle starts over.</li>
+            <li>At the end of the class period touch the stop button.</li>
+            <li>Touch the email icon at the bottom of the screen, and the results will be attached to an email.</li>
+            <li>Send the results to yourself or someone else, and they can be downloaded onto another computer and analyzed.</li>
+        </ol>
+        <br/>
+        <p>More information about the protocol is available at <a href="http://www.cwsei.ubc.ca/resources/COPUS.htm">http://www.cwsei.ubc.ca/resources/COPUS.htm</a>.
         ]]>
     </string>
 
