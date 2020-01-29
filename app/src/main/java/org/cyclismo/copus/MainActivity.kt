@@ -28,7 +28,8 @@ import java.nio.charset.Charset
 
 class MainActivity : AppCompatActivity(),
     AdapterView.OnItemSelectedListener,
-    ConfirmDeleteCurrentObservation.DeleteNoticeDialogListener
+    ConfirmDeleteCurrentObservation.DeleteNoticeDialogListener,
+    StopTimerDialog.StopNoticeDialogListener
 {
 
     private var currentObservation : PeriodicUpdate = PeriodicUpdate()
@@ -294,6 +295,11 @@ class MainActivity : AppCompatActivity(),
         // User clicked on the cancel button. Haco nada
     }
 
+    override fun onStopTimerNoticeCancel(dialog : DialogFragment?)
+    {
+        // user clicked on the cancel button on the end timer button.
+    }
+
     public fun startButton(view: View)
     {
         if(view is Button) {
@@ -320,6 +326,10 @@ class MainActivity : AppCompatActivity(),
                 this.currentObservation.stopTimer(10)
                 counter.stop()
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+                val stopTimerNotice = StopTimerDialog()
+                val fragmentManager = supportFragmentManager
+                stopTimerNotice.show(fragmentManager,"noticeTimerEnd")
             }
         }
     }
