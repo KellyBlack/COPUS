@@ -18,11 +18,13 @@ class ConfirmDeleteCurrentObservation : DialogFragment()
             val builder = AlertDialog.Builder(it)
             builder.setMessage(R.string.ask_delete_current_observation)
                 .setPositiveButton(R.string.delete_current_observation,
-                    DialogInterface.OnClickListener { dialog, id ->
+                    DialogInterface.OnClickListener
+                    { _ , _ -> //dialog, id ->
                         listener.onDeleteObservationAndProceed(this)
                     })
                 .setNegativeButton(R.string.cancel_delete_observation,
-                    DialogInterface.OnClickListener { dialog, id ->
+                    DialogInterface.OnClickListener
+                    { _ , _ -> //dialog, id ->
                         listener.onDeleteObservationCanel(this)
                     })
             // Create the AlertDialog object and return it

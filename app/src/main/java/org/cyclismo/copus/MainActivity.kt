@@ -235,14 +235,14 @@ class MainActivity : AppCompatActivity(),
 
         for(checkboxID in this.checkBoxIDs)
         {
-            val checkbox : CheckBox = findViewById<CheckBox>(checkboxID)
+            val checkbox : CheckBox? = findViewById<CheckBox>(checkboxID)
             if(checkbox != null)
                 checkbox.isChecked = false
         }
 
         for(spinnerBoxID in this.spinnerBoxIds)
         {
-            val spinnerBox : Spinner = findViewById<Spinner>(spinnerBoxID)
+            val spinnerBox : Spinner? = findViewById<Spinner>(spinnerBoxID)
             if(spinnerBox != null)
                 spinnerBox.setSelection(0)
         }
@@ -266,6 +266,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     public fun clickCOPUSurl(view: View)
     {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.COPUS_URL)))
@@ -334,6 +335,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     public fun sendResults(view: View)
     {
 
@@ -348,7 +350,7 @@ class MainActivity : AppCompatActivity(),
             allObservations += pastObs.convertToString(period) + "\n"
         }
 
-        val fileToWrite : File = saveStringAsFile(allObservations)
+        val fileToWrite : File? = saveStringAsFile(allObservations)
         if(fileToWrite!=null)
         {
             val settings  = PreferenceManager.getDefaultSharedPreferences(this)
@@ -386,15 +388,10 @@ class MainActivity : AppCompatActivity(),
     private fun saveStringAsFile(contents:String) : File
     {
         val directoryFile: File = File(filesDir,"observations")
-        if(directoryFile.mkdirs())
-        {
-        }
-        else
-        {
-        }
+        directoryFile.mkdirs()
 
         val fileToWrite : File = File(directoryFile,"copus.csv")
-        var outputStream : FileOutputStream = FileOutputStream(fileToWrite)
+        val outputStream : FileOutputStream = FileOutputStream(fileToWrite)
         //outputStream = openFileOutput("copusTempFile", Context.MODE_PRIVATE)
         outputStream.write(contents.toByteArray(Charset.defaultCharset()),0,contents.length)
         outputStream.flush()

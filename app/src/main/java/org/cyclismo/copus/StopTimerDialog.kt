@@ -18,7 +18,7 @@ class StopTimerDialog : DialogFragment()
             val builder = AlertDialog.Builder(it)
             builder.setMessage(R.string.timer_stopped_notice)
                 .setPositiveButton(R.string.timer_continue_button,
-                    DialogInterface.OnClickListener { dialog, id ->
+                    DialogInterface.OnClickListener { _, _ -> //dialog, id ->
                         listener.onStopTimerNoticeCancel(this)
                     })
             // Create the AlertDialog object and return it

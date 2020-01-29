@@ -122,12 +122,12 @@ class PeriodicUpdate
         }
         return(false)
     }
-    fun runTimer(period:Int=100)
+    fun runTimer(@Suppress("UNUSED_PARAMETER") period:Int=100)
     {
         this.running = true;
     }
 
-    fun stopTimer(period:Int=100)
+    fun stopTimer(@Suppress("UNUSED_PARAMETER") period:Int=100)
     {
         this.running = false
     }

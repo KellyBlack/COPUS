@@ -32,6 +32,7 @@ class AboutActivity : AppCompatActivity()
     }
 
 
+    @Suppress("UNUSED_PARAMETER")
     fun onTextViewClick(view: View)
     {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.COPUS_URL)))
