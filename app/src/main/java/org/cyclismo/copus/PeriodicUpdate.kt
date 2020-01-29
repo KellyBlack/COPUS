@@ -111,7 +111,10 @@ class PeriodicUpdate
         {
             studentCode.set(keyValue,false)
         }
-
+        for((keyValue,_) in studentEngagement)
+        {
+            studentEngagement.set(keyValue,"")
+        }
     }
 
     fun turnOver(currentTime : Long) : Boolean
