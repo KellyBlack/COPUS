@@ -1,4 +1,4 @@
-opendir: file:///home/black/write/class/algebra/2017/spring/announcements/www
+opendir: file:///home/black/AndroidStudioProjects/copus/www
 spell_check_default: 1
 display_right_margin: 0
 c2e.convert_special: 0
@@ -20,12 +20,14 @@ view_blockstack: 1
 leftpanel_active_tab: 0
 default_mime_type: text/html
 c2e.IE_apos_workaround: 0
-openfiles: /home/black/AndroidStudioProjects/copus/www/index.html:410:0:1:
+recent_files: file:///home/black/AndroidStudioProjects/copus/www/styles.css
+openfiles: /home/black/AndroidStudioProjects/copus/www/index.html:548:306:1:
+openfiles: /home/black/AndroidStudioProjects/copus/www/styles.css:254:0:0:
 last_filefilter: 
 adv_open_matchname: 0
 editor_tab_width: 3
 fb_show_backup_f: 0
-htmlbar_notebooktab: 2
+htmlbar_notebooktab: 6
 outputb_scroll_mode: 0
 spell_insert_entities: 0
 htmlbar_thumbnailwidth: 300
