@@ -339,10 +339,7 @@ class MainActivity : AppCompatActivity(),
     public fun sendResults(view: View)
     {
 
-        var allObservations : String = ""
-        if(this.pastObservations.size>0)
-            allObservations = this.pastObservations.first().headerToString() + "\n"
-
+        var allObservations : String = this.currentObservation.headerToString() + "\n"
         var period : Int = 0
         for(pastObs in this.pastObservations)
         {

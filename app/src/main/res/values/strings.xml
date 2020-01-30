@@ -40,6 +40,7 @@
     <string name="Timer_Start">Start</string>
     <string name="Timer_End">Stop</string>
     <string name="Time_Stamp_Label">Time: %s</string>
+    <string name="Timer_Text_Label"></string>
 
     <string name="studentEngagement">Engagement</string>
     <string-array name="student_engagement_options">
@@ -72,10 +73,14 @@
     <string name="help_title_bar">Help</string>
     <string name="help_page"><![CDATA[
         <p>
-        The options and layout are to aid in implementing an observation based on the COPUS protocol.
-        The basic idea is that you start the timer, record the observations, and stop the timer.
-        Before starting the timer again you have to send the last observation using email so that
-        the observations can be saved.
+        This app is used to aid in implementing an observation based on the COPUS protocol.
+        The options on the opening view allow you to choose the different options from the protocol.
+        The basic idea is that you start the timer, record the observations, and stop the timer at the end.
+        You then send the results via email so that you can view and share them.
+        </p><br/>
+        <p>
+        Before starting the timer a second time you have to send the previous observations so that
+        the observations can be saved. Otherwise, the previous observations will be lost.
         </p><br/>
         <p>How to operate:</p><br/>
         <ol>
@@ -87,7 +92,8 @@
             <li>Send the results to yourself or someone else, and they can be downloaded onto another computer and analyzed.</li>
         </ol>
         <br/>
-        <p>More information about the protocol is available at <a href="http://www.cwsei.ubc.ca/resources/COPUS.htm">http://www.cwsei.ubc.ca/resources/COPUS.htm</a>.
+        <p>More information about the protocol is available at <a href="http://www.cwsei.ubc.ca/resources/COPUS.htm">http://www.cwsei.ubc.ca/resources/COPUS.htm</a>.<br/>
+        <p>There is one difference in the app and the protocol. This app allows you to specify student engagements for each student status. If you do not like this simply use the top student engagement level and ignore the others.</p>
         ]]>
     </string>
 
