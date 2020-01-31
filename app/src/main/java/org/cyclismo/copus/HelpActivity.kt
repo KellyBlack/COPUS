@@ -2,6 +2,7 @@ package org.cyclismo.copus
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -25,6 +26,7 @@ class HelpActivity : AppCompatActivity() {
         {
             val helpMessage = HtmlCompat.fromHtml(getString(R.string.help_page),HtmlCompat.FROM_HTML_MODE_COMPACT)
             myHelpText.setText(helpMessage.toString())
+            myHelpText.movementMethod = ScrollingMovementMethod()
         }
     }
 
