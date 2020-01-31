@@ -73,7 +73,13 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
             android:onClick="startButton"
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp"
+            android:singleLine="true"
+            android:background="@drawable/button_details"
             android:text="@string/Timer_Start" />
 
         <TableLayout
