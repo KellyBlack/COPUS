@@ -473,14 +473,14 @@
 
         </TableLayout>
 
-        <TextView
+        <!--TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:onClick="clickCOPUSurl"
             android:text="@string/COPUS_URL_MESSAGE"
-            android:textStyle="italic" />
+            android:textStyle="italic" / -->
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
