@@ -96,39 +96,21 @@ class PeriodicUpdate
         ClassroomActivity(initials="O",header="inst_o")
     )
 
-    private val studentCode : MutableMap<String,Boolean> =
-        mutableMapOf<String,Boolean>(
-            "L" to false,
-            "Ind" to false,
-            "CG" to false,
-            "WG" to false,
-            "OG" to false,
-            "AnQ" to false,
-            "SQ" to false,
-            "WC" to false,
-            "Prd" to false,
-            "SP" to false,
-            "TQ" to false,
-            "W"  to false,
-            "O" to false
-        )
-
-    private val studentEngagement : MutableMap<String,String> =
-        mutableMapOf<String,String>(
-            "L" to "",
-            "Ind" to "",
-            "CG" to "",
-            "WG" to "",
-            "OG" to "",
-            "AnQ" to "",
-            "SQ" to "",
-            "WC" to "",
-            "Prd" to "",
-            "SP" to "",
-            "TQ" to "",
-            "W"  to "",
-            "O" to ""
-        )
+    private val studentOptions = mutableListOf<ClassroomActivity>(
+        ClassroomActivity(initials="L",header="stud_L"),
+        ClassroomActivity(initials="Ind",header="stud_ind"),
+        ClassroomActivity(initials="CG",header="stud_cg"),
+        ClassroomActivity(initials="WG",header="stud_wg"),
+        ClassroomActivity(initials="OG",header="stud_og"),
+        ClassroomActivity(initials="AnQ",header="stud_anq"),
+        ClassroomActivity(initials="SQ",header="stud_sq"),
+        ClassroomActivity(initials="WC",header="stud_wc"),
+        ClassroomActivity(initials="Prd",header="stud_prd"),
+        ClassroomActivity(initials="SP",header="stud_sp"),
+        ClassroomActivity(initials="TQ",header="stud_tq"),
+        ClassroomActivity(initials="W",header="stud_w"),
+        ClassroomActivity(initials="O",header="stud_o")
+    )
 
 
     constructor()
@@ -142,14 +124,12 @@ class PeriodicUpdate
         for (entry in this.lecturerOptions)
             entry.present = false
 
-        for((keyValue,_) in studentCode)
+        for (entry in this.studentOptions)
         {
-            studentCode.set(keyValue,false)
+            entry.present = false
+            entry.engagement = ""
         }
-        for((keyValue,_) in studentEngagement)
-        {
-            studentEngagement.set(keyValue,"")
-        }
+
     }
 
     fun isClear() : Boolean
@@ -157,7 +137,8 @@ class PeriodicUpdate
         for (entry in this.lecturerOptions)
             if(entry.present) return(false)
 
-        TODO()
+        for (entry in this.studentOptions)
+            if((entry.present) || (entry.engagement!="")) return(false)
 
         return(true)
     }
@@ -207,38 +188,50 @@ class PeriodicUpdate
 
     fun getStudentValue(keyValue : String) : Boolean
     {
-        if(studentCode.containsKey(keyValue))
+        for(entry in this.studentOptions)
         {
-            return(studentCode.get(keyValue) ?: false)
+            if(entry.initials==keyValue)
+            {
+                return(entry.present)
+            }
         }
         return(false)
     }
 
     fun setStudentValue(keyValue : String,newValue : Boolean) : Boolean
     {
-        if(studentCode.containsKey(keyValue))
+        for(entry in this.studentOptions)
         {
-            studentCode.set(keyValue,newValue)
-            return(true)
+            if(entry.initials==keyValue)
+            {
+                entry.present = newValue
+                return(true)
+            }
         }
         return(false)
     }
 
     fun getEngagementValue(keyValue : String) : String
     {
-        if(studentEngagement.containsKey(keyValue))
+        for(entry in this.studentOptions)
         {
-            return(studentEngagement.get(keyValue) ?: "")
+            if(entry.initials==keyValue)
+            {
+                return(entry.engagement)
+            }
         }
         return("")
     }
 
     fun setEngagementValue(keyValue : String,newValue : String) : Boolean
     {
-        if(studentEngagement.containsKey(keyValue))
+        for(entry in this.studentOptions)
         {
-            studentEngagement.set(keyValue,newValue)
-            return(true)
+            if(entry.initials==keyValue)
+            {
+                entry.engagement = newValue
+                return(true)
+            }
         }
         return(false)
     }
@@ -252,17 +245,11 @@ class PeriodicUpdate
             allValues += ",${entry.recording()}"
         }
 
-        for((_,value) in studentCode)
+        for (entry in this.studentOptions)
         {
-            if(value)
-                allValues += ",1"
-            else
-                allValues += ",0"
+            allValues += ",${entry.recording()},${entry.engagementValue()}"
         }
-        for((_,value) in studentEngagement)
-        {
-            allValues += ",$value"
-        }
+
         return(allValues)
 
     }
@@ -274,15 +261,11 @@ class PeriodicUpdate
         {
             allValues += ",${entry.headerVal()}"
         }
+        for (entry in this.studentOptions)
+        {
+            allValues += ",${entry.headerVal()},engage_${entry.headerVal()}"
+        }
 
-        for((key,_) in studentCode)
-        {
-            allValues += ",student_$key"
-        }
-        for((key,_) in studentEngagement)
-        {
-            allValues += ",engagement_$key"
-        }
         return(allValues)
 
     }
