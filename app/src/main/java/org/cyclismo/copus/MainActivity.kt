@@ -321,7 +321,10 @@ class MainActivity : AppCompatActivity(),
             }
             else
             {
-                pushCurrentState()
+                if(!this.currentObservation.isClear())
+                {
+                    pushCurrentState()
+                }
                 view.text = getString(R.string.Timer_Start)
                 this.currentObservation.stopTimer(10)
                 counter.stop()
