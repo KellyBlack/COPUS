@@ -38,27 +38,63 @@ import kotlin.math.abs
     by the observers.
  */
 
+class ClassroomActivity(
+    var initials: String = "",
+    var header: String = "",
+    var present: Boolean = false,
+    var engagement: String = "",
+    var id: Long = -1
+)
+{
+    fun matchInitials(check:String) : Boolean
+    {
+        return(this.initials == check)
+    }
+
+    fun headerVal() : String
+    {
+        return(this.header)
+    }
+
+    fun recording() : String
+    {
+        if(this.present)
+            return("1")
+        return("0")
+    }
+
+    fun engagementValue() : String
+    {
+        return(this.engagement)
+    }
+
+    fun matchID(value: Long) : Boolean
+    {
+        return(this.id == value)
+    }
+
+}
+
 class PeriodicUpdate
 {
 
     private var running : Boolean = false
     public var startTime : Long = 0
 
-    private val lecturerCode : MutableMap<String,Boolean> =
-        mutableMapOf<String,Boolean>(
-            "Lec" to false,
-            "RtW" to false,
-            "FUp" to false,
-            "PQ" to false,
-            "CQ" to false,
-            "AnQ" to false,
-            "MG" to false,
-            "1o1" to false,
-            "DV" to false,
-            "ADM" to false,
-            "W" to false,
-            "O" to false
-        )
+    private val lecturerOptions = mutableListOf<ClassroomActivity>(
+        ClassroomActivity(initials="Lec",header="inst_lec"),
+        ClassroomActivity(initials="RtW",header="inst_rtw"),
+        ClassroomActivity(initials="FUp",header="inst_fup"),
+        ClassroomActivity(initials="PQ",header="inst_pq"),
+        ClassroomActivity(initials="CQ",header="inst_cq"),
+        ClassroomActivity(initials="AnQ",header="inst_anq"),
+        ClassroomActivity(initials="MG",header="inst_mg"),
+        ClassroomActivity(initials="1o1",header="inst_1o1"),
+        ClassroomActivity(initials="DV",header="inst_dv"),
+        ClassroomActivity(initials="ADM",header="inst_adm"),
+        ClassroomActivity(initials="W",header="inst_w"),
+        ClassroomActivity(initials="O",header="inst_o")
+    )
 
     private val studentCode : MutableMap<String,Boolean> =
         mutableMapOf<String,Boolean>(
@@ -103,10 +139,9 @@ class PeriodicUpdate
 
     fun clearAllValues()
     {
-        for((keyValue,_) in lecturerCode)
-        {
-            lecturerCode.set(keyValue,false)
-        }
+        for (entry in this.lecturerOptions)
+            entry.present = false
+
         for((keyValue,_) in studentCode)
         {
             studentCode.set(keyValue,false)
@@ -117,6 +152,16 @@ class PeriodicUpdate
         }
     }
 
+    fun isClear() : Boolean
+    {
+        for (entry in this.lecturerOptions)
+            if(entry.present) return(false)
+
+        TODO()
+
+        return(true)
+    }
+
     fun turnOver(currentTime : Long) : Boolean
     {
         if(abs(currentTime-this.startTime)>120000)
@@ -125,6 +170,7 @@ class PeriodicUpdate
         }
         return(false)
     }
+
     fun runTimer(@Suppress("UNUSED_PARAMETER") period:Int=100)
     {
         this.running = true;
@@ -137,21 +183,26 @@ class PeriodicUpdate
 
     fun getLecturerValue(keyValue : String) : Boolean
     {
-        if(lecturerCode.containsKey(keyValue))
+        for (entry in this.lecturerOptions)
         {
-            return(lecturerCode.get(keyValue) ?: false)
+            if(entry.initials == keyValue)
+                return(entry.present)
         }
         return(false)
     }
 
     fun setLecturerValue(keyValue : String,newValue : Boolean) : Boolean
     {
-        if(lecturerCode.containsKey(keyValue))
+        for (entry in this.lecturerOptions)
         {
-            lecturerCode.set(keyValue,newValue)
-            return(true)
+            if(entry.initials == keyValue)
+            {
+                entry.present = newValue
+                return (true)
+            }
         }
         return(false)
+
     }
 
     fun getStudentValue(keyValue : String) : Boolean
@@ -195,13 +246,12 @@ class PeriodicUpdate
     public fun convertToString(period:Int) : String
     {
         var allValues : String = "$period"
-        for((_,value) in lecturerCode)
+
+        for (entry in this.lecturerOptions)
         {
-            if(value)
-                allValues += ",1"
-            else
-                allValues += ",0"
+            allValues += ",${entry.recording()}"
         }
+
         for((_,value) in studentCode)
         {
             if(value)
@@ -220,10 +270,11 @@ class PeriodicUpdate
     public fun headerToString() : String
     {
         var allValues : String = "period"
-        for((key,_) in lecturerCode)
+        for (entry in this.lecturerOptions)
         {
-            allValues += ",lecturer_$key"
+            allValues += ",${entry.headerVal()}"
         }
+
         for((key,_) in studentCode)
         {
             allValues += ",student_$key"
