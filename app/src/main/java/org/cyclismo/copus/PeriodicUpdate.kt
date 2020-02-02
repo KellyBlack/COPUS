@@ -78,9 +78,6 @@ class ClassroomActivity(
 class PeriodicUpdate
 {
 
-    private var running : Boolean = false
-    public var startTime : Long = 0
-
     private val lecturerOptions = mutableListOf<ClassroomActivity>(
         ClassroomActivity(initials="Lec",header="inst_lec"),
         ClassroomActivity(initials="RtW",header="inst_rtw"),
@@ -115,7 +112,6 @@ class PeriodicUpdate
 
     constructor()
     {
-        this.running = false
         clearAllValues()
     }
 
@@ -141,25 +137,6 @@ class PeriodicUpdate
             if((entry.present) || (entry.engagement!="")) return(false)
 
         return(true)
-    }
-
-    fun turnOver(currentTime : Long) : Boolean
-    {
-        if(abs(currentTime-this.startTime)>120000)
-        {
-            return(true)
-        }
-        return(false)
-    }
-
-    fun runTimer(@Suppress("UNUSED_PARAMETER") period:Int=100)
-    {
-        this.running = true;
-    }
-
-    fun stopTimer(@Suppress("UNUSED_PARAMETER") period:Int=100)
-    {
-        this.running = false
     }
 
     fun getLecturerValue(keyValue : String) : Boolean

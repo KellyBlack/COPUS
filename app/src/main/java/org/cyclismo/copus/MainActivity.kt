@@ -96,20 +96,12 @@ class MainActivity : AppCompatActivity(),
     {
         val view = findViewById<Button>(R.id.button)
         val counter: Chronometer = findViewById<Chronometer>(R.id.TimeView)
-        /*
-        this.pastObservations.clear()
-        clearAllCheckboxes()
-         */
+        val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
+
+        observationFragment.startNewObservation()
         view.text = getString(R.string.Timer_End)
-        /*
-        this.currentObservation.runTimer(10)
-         */
         counter.format = getString(R.string.Time_Stamp_Label)
         counter.base = SystemClock.elapsedRealtime()
-        /*
-        this.currentObservation.startTime = counter.base
-
-         */
         counter.start()
         //counter.onChronometerTickListener = object: TimerReact
         counter.setOnChronometerTickListener(TimerReact(this))
@@ -140,8 +132,6 @@ class MainActivity : AppCompatActivity(),
             val counter: Chronometer = findViewById(R.id.TimeView)
             val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
 
-            println("Start biutton: ${view.text} - ${getString(R.string.Timer_Start)}")
-
             if (view.text == getString(R.string.Timer_Start))
             {
 
@@ -160,9 +150,11 @@ class MainActivity : AppCompatActivity(),
             }
             else
             {
-                observationFragment.pushCurrentState()
+                if(!observationFragment.isClear())
+                {
+                    observationFragment.pushCurrentState()
+                }
                 view.text = getString(R.string.Timer_Start)
-                observationFragment.stopTimer(10)
                 counter.stop()
                 observationFragment.clearAllCheckboxes()
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

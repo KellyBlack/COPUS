@@ -160,7 +160,6 @@ class ClassActions : Fragment(),
         for(spinnerBoxID in this.spinnerBoxIds)
         {
             val spinnerView : Spinner = view.findViewById<Spinner>(spinnerBoxID)
-            println("View: ${view.id} - ${spinnerView.id}")
             this.spinnerBoxViews.put(spinnerView,spinnerBoxID)
 
             spinnerView.onItemSelectedListener = this@ClassActions
@@ -170,14 +169,12 @@ class ClassActions : Fragment(),
 
     override fun onNothingSelected(parent: AdapterView<out Adapter>?)
     {
-        println("NADA")
         this.currentObservation.setEngagementValue(this.spinnerBoxStudentIdentifiers[parent?.id] ?: "","")
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long)
     {
         val theSpinner = parent as Spinner
-        println("\n\n\nSpinner: ${parent.id} - value: ${theSpinner.getSelectedItem().toString()}\n\n\n")
         this.currentObservation.setEngagementValue(this.spinnerBoxStudentIdentifiers[parent.id] ?: "",theSpinner.getSelectedItem().toString())
     }
 
@@ -193,11 +190,11 @@ class ClassActions : Fragment(),
         clearAllCheckboxes()
     }
 
-    public fun stopTimer(period:Int)
+    public fun startNewObservation()
     {
-        this.currentObservation.stopTimer(period)
+        this.pastObservations.clear()
+        clearAllCheckboxes()
     }
-
 
     public fun clearAllCheckboxes()
     {
@@ -209,10 +206,6 @@ class ClassActions : Fragment(),
                 val checkbox: CheckBox = this.localView!!.findViewById<CheckBox>(checkboxID)
                 if (checkbox != null)
                     checkbox.isChecked = false
-            }
-            else
-            {
-                println("NOT THERE!!!!\n\n\n\n")
             }
         }
 
@@ -256,6 +249,11 @@ class ClassActions : Fragment(),
             allObservations += pastObs.convertToString(period) + "\n"
         }
         return(allObservations)
+    }
+
+    public fun isClear() : Boolean
+    {
+        return(this.currentObservation.isClear())
     }
 
 
