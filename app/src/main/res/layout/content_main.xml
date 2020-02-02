@@ -84,7 +84,7 @@
 
 
         <fragment
-            android:id="@+id/fragment"
+            android:id="@+id/observationFragment"
             android:name="org.cyclismo.copus.ClassActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

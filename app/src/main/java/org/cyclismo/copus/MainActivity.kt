@@ -4,7 +4,6 @@ package org.cyclismo.copus
 //import com.google.android.material.snackbar.Snackbar
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -128,14 +127,25 @@ class MainActivity : AppCompatActivity(),
         // user clicked on the cancel button on the end timer button.
     }
 
+    public fun pushCurrentState()
+    {
+        val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
+        observationFragment.pushCurrentState()
+    }
+
     public fun startButton(view: View)
     {
-        if(view is Button) {
+        if(view is Button)
+        {
             val counter: Chronometer = findViewById(R.id.TimeView)
+            val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
+
+            println("Start biutton: ${view.text} - ${getString(R.string.Timer_Start)}")
+
             if (view.text == getString(R.string.Timer_Start))
             {
-                /*
-                if(this.pastObservations.size > 0)
+
+                if(observationFragment.numberObservations() > 0)
                 {
                     val confirmDelete = ConfirmDeleteCurrentObservation()
                     val fragmentManager = supportFragmentManager
@@ -146,28 +156,15 @@ class MainActivity : AppCompatActivity(),
                     onDeleteObservationAndProceed(null)
                 }
 
-                 */
 
             }
             else
             {
-                /*
-                if(!this.currentObservation.isClear())
-                {
-                    pushCurrentState()
-                }
-
-                 */
+                observationFragment.pushCurrentState()
                 view.text = getString(R.string.Timer_Start)
-                /*
-                this.currentObservation.stopTimer(10)
-
-                 */
+                observationFragment.stopTimer(10)
                 counter.stop()
-                /*
-                clearAllCheckboxes()
-
-                 */
+                observationFragment.clearAllCheckboxes()
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
                 val stopTimerNotice = StopTimerDialog()
@@ -181,16 +178,8 @@ class MainActivity : AppCompatActivity(),
     public fun sendResults(view: View)
     {
 
-        var allObservations : String = "" // this.currentObservation.headerToString() + "\n"
-        var period : Int = 0
-        /*
-        for(pastObs in this.pastObservations)
-        {
-            period += 1
-            allObservations += pastObs.convertToString(period) + "\n"
-        }
-
-         */
+        val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
+        var allObservations : String = observationFragment.observationsAsString()
 
         val fileToWrite : File? = saveStringAsFile(allObservations)
         if(fileToWrite!=null)
@@ -240,16 +229,6 @@ class MainActivity : AppCompatActivity(),
         outputStream.close()
 
         return(File(directoryFile,"copus.csv"))
-    }
-
-    public fun pushCurrentState()
-    {
-        /*
-        this.pastObservations.add(this.currentObservation)
-        this.currentObservation = PeriodicUpdate()
-        clearAllCheckboxes()
-
-         */
     }
 
 

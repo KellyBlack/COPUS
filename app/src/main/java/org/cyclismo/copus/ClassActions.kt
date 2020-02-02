@@ -42,7 +42,7 @@ class ClassActions : Fragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var localView = inflater.inflate(R.layout.class_actions_fragment, container, false)
+        val localView = inflater.inflate(R.layout.class_actions_fragment, container, false)
         return localView
     }
 
@@ -180,6 +180,24 @@ class ClassActions : Fragment(),
         this.currentObservation.setEngagementValue(this.spinnerBoxStudentIdentifiers[parent.id] ?: "",theSpinner.getSelectedItem().toString())
     }
 
+    public fun numberObservations() : Int
+    {
+        return(this.pastObservations.size)
+    }
+
+    public fun pushCurrentState()
+    {
+        this.pastObservations.add(this.currentObservation)
+        this.currentObservation = PeriodicUpdate()
+        clearAllCheckboxes()
+    }
+
+    public fun stopTimer(period:Int)
+    {
+        this.currentObservation.stopTimer(period)
+    }
+
+
     public fun clearAllCheckboxes()
     {
 
@@ -204,8 +222,7 @@ class ClassActions : Fragment(),
     {
         if(view is CheckBox)
         {
-            val checkView = view as CheckBox
-            val checkValue : Boolean = checkView.isChecked
+            val checkValue : Boolean = view.isChecked
 
             if(this.checkBoxLecturerIdentifiers.containsKey(view.id))
             {
@@ -216,6 +233,18 @@ class ClassActions : Fragment(),
                 this.currentObservation.setStudentValue(this.checkBoxStudentIdentifiers[view.id] ?: "",checkValue)
             }
         }
+    }
+
+    public fun observationsAsString() : String
+    {
+        var period : Int = 0
+        var allObservations : String = ""
+        for(pastObs in this.pastObservations)
+        {
+            period += 1
+            allObservations += pastObs.convertToString(period) + "\n"
+        }
+        return(allObservations)
     }
 
 
