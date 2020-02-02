@@ -42,8 +42,8 @@ class ClassActions : Fragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val localView = inflater.inflate(R.layout.class_actions_fragment, container, false)
-        return localView
+        this.localView = inflater.inflate(R.layout.class_actions_fragment, container, false)
+        return this.localView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -55,6 +55,7 @@ class ClassActions : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        this.localView = view
         this.currentObservation.clearAllValues()
         clearAllCheckboxes()
 
@@ -203,16 +204,26 @@ class ClassActions : Fragment(),
 
         for(checkboxID in this.checkBoxIDs)
         {
-            val checkbox : CheckBox? = localView!!.findViewById<CheckBox>(checkboxID)
-            if(checkbox != null)
-                checkbox.isChecked = false
+            if(this.localView!= null)
+            {
+                val checkbox: CheckBox = this.localView!!.findViewById<CheckBox>(checkboxID)
+                if (checkbox != null)
+                    checkbox.isChecked = false
+            }
+            else
+            {
+                println("NOT THERE!!!!\n\n\n\n")
+            }
         }
 
         for(spinnerBoxID in this.spinnerBoxIds)
         {
-            val spinnerBox : Spinner? = localView!!.findViewById<Spinner>(spinnerBoxID)
-            if(spinnerBox != null)
-                spinnerBox.setSelection(0)
+            if(this.localView!= null)
+            {
+                val spinnerBox: Spinner? = this.localView!!.findViewById<Spinner>(spinnerBoxID)
+                if (spinnerBox != null)
+                    spinnerBox.setSelection(0)
+            }
         }
 
         this.currentObservation.clearAllValues()
@@ -238,7 +249,7 @@ class ClassActions : Fragment(),
     public fun observationsAsString() : String
     {
         var period : Int = 0
-        var allObservations : String = ""
+        var allObservations : String = this.currentObservation.headerToString() + "\n"
         for(pastObs in this.pastObservations)
         {
             period += 1
