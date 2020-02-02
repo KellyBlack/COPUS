@@ -27,25 +27,11 @@ import java.nio.charset.Charset
 
 
 class MainActivity : AppCompatActivity(),
-    AdapterView.OnItemSelectedListener,
     ConfirmDeleteCurrentObservation.DeleteNoticeDialogListener,
     StopTimerDialog.StopNoticeDialogListener
 {
 
-    private var currentObservation : PeriodicUpdate = PeriodicUpdate()
-    private var pastObservations : MutableList<PeriodicUpdate> = mutableListOf<PeriodicUpdate>()
     private var startButton : Button? = null
-
-    private var checkBoxIDs = arrayOf<Int>()
-    private var spinnerBoxIds = arrayOf<Int>()
-
-    private var checkBoxViews : MutableMap<View,Int> = mutableMapOf<View,Int>()
-    private var spinnerBoxViews : MutableMap<View,Int> = mutableMapOf<View,Int>()
-
-    private var checkBoxLecturerIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
-    private var checkBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
-    private var spinnerBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
-
     private lateinit var requestFileIntent: Intent
     private lateinit var inputPFD: ParcelFileDescriptor
 
@@ -65,140 +51,9 @@ class MainActivity : AppCompatActivity(),
         }
 
         this.startButton = findViewById<Button>(R.id.button)
-        this.currentObservation.clearAllValues()
-        clearAllCheckboxes()
-
-        this.checkBoxIDs = arrayOf(
-            R.id.lecturingCheckbox,
-            R.id.rtwCheckbox,
-            R.id.fupCheckbox,
-            R.id.pqCheckbox,
-            R.id.cqCheckbox,
-            R.id.anqCheckbox,
-            R.id.mgCheckbox,
-            R.id.oneOnOneCheckbox,
-            R.id.dvCheckbox,
-            R.id.adminCheckbox,
-            R.id.waitingCheckbox,
-            R.id.otherCheckbox,
-            R.id.studentListeningCheckbox,
-            R.id.individualCheckbox,
-            R.id.cgCheckbox,
-            R.id.wgCheckbox,
-            R.id.ogCheckbox,
-            R.id.studentAnswerCheckbox,
-            R.id.sqCheckbox,
-            R.id.wcCheckbox,
-            R.id.prdCheckbox,
-            R.id.spCheckbox,
-            R.id.tqCheckbox,
-            R.id.studentwaitingCheckbox,
-            R.id.studentotherCheckbox
-        )
-
-        this.spinnerBoxIds = arrayOf(
-            R.id.ListeningSpinner,
-            R.id.ThinkingSpinnerind,
-            R.id.CGSpinner,
-            R.id.groupWorkSpinner,
-            R.id.ogSpinner,
-            R.id.ANQSpinner,
-            R.id.SQSpinner,
-            R.id.WCspinner,
-            R.id.PRDspinner,
-            R.id.SPSpinner,
-            R.id.TQSpinner,
-            R.id.waitingSpinner,
-            R.id.otherSpinner
-        )
-
-        this.checkBoxLecturerIdentifiers = mutableMapOf<Int,String>(
-            R.id.lecturingCheckbox to "Lec",
-            R.id.rtwCheckbox  to "RtW",
-            R.id.fupCheckbox to "FUp",
-            R.id.pqCheckbox to "PQ",
-            R.id.cqCheckbox to "CQ",
-            R.id.anqCheckbox to "AnQ",
-            R.id.mgCheckbox to "MG",
-            R.id.oneOnOneCheckbox to "1o1",
-            R.id.dvCheckbox to "DV",
-            R.id.adminCheckbox to "ADM",
-            R.id.waitingCheckbox to "W",
-            R.id.otherCheckbox to "O"
-        )
-
-        this.checkBoxStudentIdentifiers = mutableMapOf<Int,String>(
-            R.id.studentListeningCheckbox to "L",
-            R.id.individualCheckbox to "Ind",
-            R.id.cgCheckbox to "CG",
-            R.id.wgCheckbox to "WG",
-            R.id.ogCheckbox to "OG",
-            R.id.studentAnswerCheckbox to "AnQ",
-            R.id.sqCheckbox to "SQ",
-            R.id.wcCheckbox to "WC",
-            R.id.prdCheckbox to "Prd",
-            R.id.spCheckbox to "SP",
-            R.id.tqCheckbox to "TQ",
-            R.id.studentwaitingCheckbox to "W",
-            R.id.studentotherCheckbox to "O"
-        )
-
-        this.spinnerBoxStudentIdentifiers = mutableMapOf<Int,String>(
-            R.id.ListeningSpinner to "L",
-            R.id.ThinkingSpinnerind to "Ind",
-            R.id.CGSpinner to "CG",
-            R.id.groupWorkSpinner to "WG",
-            R.id.ogSpinner to "OG",
-            R.id.ANQSpinner to "AnQ",
-            R.id.SQSpinner to "SQ",
-            R.id.WCspinner to "WC",
-            R.id.PRDspinner to "Prd",
-            R.id.SPSpinner to "SP",
-            R.id.TQSpinner to "TQ",
-            R.id.waitingSpinner to "W",
-            R.id.otherSpinner to "O"
-        )
-
-        for(checkBoxID in this.checkBoxIDs)
-        {
-            this.checkBoxViews.put(findViewById(checkBoxID),checkBoxID)
-        }
-
-        for(spinnerBoxID in this.spinnerBoxIds)
-        {
-            val view : Spinner = findViewById<Spinner>(spinnerBoxID)
-            this.spinnerBoxViews.put(view,spinnerBoxID)
-
-            view.onItemSelectedListener = this@MainActivity
-            /*
-            view.onItemSelectedListener = object:
-                AdapterView.OnItemSelectedListener
-            {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-                    println("Changed ${spinnerBoxStudentIdentifiers[view.id]}")
-                }
-
-                override fun onNothingSelected(parent: AdapterView<out Adapter>?) {
-
-                }
-            }
-
-             */
-        }
 
     }
 
-    override fun onNothingSelected(parent: AdapterView<out Adapter>?)
-    {
-        //val theSpinner = parent as Spinner
-        this.currentObservation.setEngagementValue(this.spinnerBoxStudentIdentifiers[parent?.id] ?: "","")
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long)
-    {
-        val theSpinner = parent as Spinner
-        this.currentObservation.setEngagementValue(this.spinnerBoxStudentIdentifiers[parent.id] ?: "",theSpinner.getSelectedItem().toString())
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -230,41 +85,6 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    public fun clearAllCheckboxes()
-    {
-
-        for(checkboxID in this.checkBoxIDs)
-        {
-            val checkbox : CheckBox? = findViewById<CheckBox>(checkboxID)
-            if(checkbox != null)
-                checkbox.isChecked = false
-        }
-
-        for(spinnerBoxID in this.spinnerBoxIds)
-        {
-            val spinnerBox : Spinner? = findViewById<Spinner>(spinnerBoxID)
-            if(spinnerBox != null)
-                spinnerBox.setSelection(0)
-        }
-
-        this.currentObservation.clearAllValues()
-
-    }
-
-    public fun lecturingClick(view : View)
-    {
-        if(view is CheckBox) {
-            val checkValue : Boolean = view.isChecked
-            if(this.checkBoxLecturerIdentifiers.containsKey(view.id))
-            {
-                this.currentObservation.setLecturerValue(this.checkBoxLecturerIdentifiers[view.id] ?: "",checkValue)
-            }
-            else if (this.checkBoxStudentIdentifiers.containsKey(view.id))
-            {
-                this.currentObservation.setStudentValue(this.checkBoxStudentIdentifiers[view.id] ?: "",checkValue)
-            }
-        }
-    }
 
     @Suppress("UNUSED_PARAMETER")
     public fun clickCOPUSurl(view: View)
@@ -277,13 +97,20 @@ class MainActivity : AppCompatActivity(),
     {
         val view = findViewById<Button>(R.id.button)
         val counter: Chronometer = findViewById<Chronometer>(R.id.TimeView)
+        /*
         this.pastObservations.clear()
         clearAllCheckboxes()
+         */
         view.text = getString(R.string.Timer_End)
+        /*
         this.currentObservation.runTimer(10)
+         */
         counter.format = getString(R.string.Time_Stamp_Label)
         counter.base = SystemClock.elapsedRealtime()
+        /*
         this.currentObservation.startTime = counter.base
+
+         */
         counter.start()
         //counter.onChronometerTickListener = object: TimerReact
         counter.setOnChronometerTickListener(TimerReact(this))
@@ -307,6 +134,7 @@ class MainActivity : AppCompatActivity(),
             val counter: Chronometer = findViewById(R.id.TimeView)
             if (view.text == getString(R.string.Timer_Start))
             {
+                /*
                 if(this.pastObservations.size > 0)
                 {
                     val confirmDelete = ConfirmDeleteCurrentObservation()
@@ -318,17 +146,28 @@ class MainActivity : AppCompatActivity(),
                     onDeleteObservationAndProceed(null)
                 }
 
+                 */
+
             }
             else
             {
+                /*
                 if(!this.currentObservation.isClear())
                 {
                     pushCurrentState()
                 }
+
+                 */
                 view.text = getString(R.string.Timer_Start)
+                /*
                 this.currentObservation.stopTimer(10)
+
+                 */
                 counter.stop()
+                /*
                 clearAllCheckboxes()
+
+                 */
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
                 val stopTimerNotice = StopTimerDialog()
@@ -342,13 +181,16 @@ class MainActivity : AppCompatActivity(),
     public fun sendResults(view: View)
     {
 
-        var allObservations : String = this.currentObservation.headerToString() + "\n"
+        var allObservations : String = "" // this.currentObservation.headerToString() + "\n"
         var period : Int = 0
+        /*
         for(pastObs in this.pastObservations)
         {
             period += 1
             allObservations += pastObs.convertToString(period) + "\n"
         }
+
+         */
 
         val fileToWrite : File? = saveStringAsFile(allObservations)
         if(fileToWrite!=null)
@@ -402,9 +244,12 @@ class MainActivity : AppCompatActivity(),
 
     public fun pushCurrentState()
     {
+        /*
         this.pastObservations.add(this.currentObservation)
         this.currentObservation = PeriodicUpdate()
         clearAllCheckboxes()
+
+         */
     }
 
 
