@@ -95,11 +95,13 @@ class MainActivity : AppCompatActivity(),
     override fun onDeleteObservationAndProceed(dialog: DialogFragment?)
     {
         val view = findViewById<Button>(R.id.button)
+        val textLabel = findViewById<TextView>(R.id.timerTextLabel)
         val counter: Chronometer = findViewById<Chronometer>(R.id.TimeView)
         val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
 
         observationFragment.startNewObservation()
         view.text = getString(R.string.Timer_End)
+        textLabel.text = ""
         counter.format = getString(R.string.Time_Stamp_Label)
         counter.base = SystemClock.elapsedRealtime()
         counter.start()
@@ -119,10 +121,15 @@ class MainActivity : AppCompatActivity(),
         // user clicked on the cancel button on the end timer button.
     }
 
-    public fun pushCurrentState()
+    public fun pushCurrentState(period:Long = -1)
     {
+        val textLabel = findViewById<TextView>(R.id.timerTextLabel)
         val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
         observationFragment.pushCurrentState()
+        if(period<0)
+            textLabel.text = ""
+        else
+            textLabel.text = "(${period})"
     }
 
     public fun startButton(view: View)

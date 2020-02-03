@@ -5,7 +5,7 @@ import android.widget.Chronometer
 
 class TimerReact(private val parentActivity:MainActivity) : Chronometer.OnChronometerTickListener
 {
-    val TESTING : Boolean = !false
+    val TESTING : Boolean = false
 
     private var numberIntervals : Long = 1
 
@@ -26,7 +26,7 @@ class TimerReact(private val parentActivity:MainActivity) : Chronometer.OnChrono
             if (SystemClock.elapsedRealtime() - chronometer.base > nextTimeCheck)
             {
                 numberIntervals += 1
-                parentActivity.pushCurrentState()
+                parentActivity.pushCurrentState(numberIntervals)
             }
         }
     }
