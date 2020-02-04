@@ -247,5 +247,29 @@ class PeriodicUpdate
 
     }
 
+    public fun flatTableHeader() : String
+    {
+        return("period,group,activity,engagement")
+    }
+
+    public fun convertToFlatString(period : Int) : String
+    {
+        var allValues : String = ""
+
+        for (entry in this.lecturerOptions)
+        {
+            if(entry.present)
+                allValues += "${period},lecturer,${entry.initials},\n"
+        }
+
+        for (entry in this.studentOptions)
+        {
+            if(entry.present)
+                allValues += "${period},student,${entry.initials},${entry.engagementValue()}\n"
+        }
+
+        return(allValues)
+    }
+
 
 }

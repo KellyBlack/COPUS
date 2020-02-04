@@ -17,6 +17,12 @@ class ClassActions : Fragment(),
     View.OnClickListener
 {
 
+    public enum class FileType
+    {
+        FLAT,
+        TABLE
+    }
+
     private var currentObservation : PeriodicUpdate = PeriodicUpdate()
     private var pastObservations : MutableList<PeriodicUpdate> = mutableListOf<PeriodicUpdate>()
     private var checkBoxIDs = arrayOf<Int>()
@@ -239,14 +245,27 @@ class ClassActions : Fragment(),
         }
     }
 
-    public fun observationsAsString() : String
+    public fun observationsAsString(which : FileType) : String
     {
         var period : Int = 0
-        var allObservations : String = this.currentObservation.headerToString() + "\n"
-        for(pastObs in this.pastObservations)
+        var allObservations: String = ""
+
+        if(which == FileType.FLAT)
         {
-            period += 1
-            allObservations += pastObs.convertToString(period) + "\n"
+            allObservations = this.currentObservation.flatTableHeader() + "\n"
+            for (pastObs in this.pastObservations)
+            {
+                period += 1
+                allObservations += pastObs.convertToFlatString(period)
+            }
+        }
+        else
+        {
+            allObservations = this.currentObservation.headerToString() + "\n"
+            for (pastObs in this.pastObservations) {
+                period += 1
+                allObservations += pastObs.convertToString(period) + "\n"
+            }
         }
         return(allObservations)
     }

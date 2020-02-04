@@ -27,8 +27,11 @@ import java.nio.charset.Charset
 
 class MainActivity : AppCompatActivity(),
     ConfirmDeleteCurrentObservation.DeleteNoticeDialogListener,
-    StopTimerDialog.StopNoticeDialogListener
+    StopTimerDialog.StopNoticeDialogListener,
+    DecideTableOrFlatCSV.DecideTypeCSVFile
 {
+
+
 
     private var startButton : Button? = null
     private lateinit var requestFileIntent: Intent
@@ -39,10 +42,10 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener { _ ->
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             //    .setAction("Action", null).show()
-            sendResults(view)
+            decideFileType()
         }
 
         this.requestFileIntent = Intent(Intent.ACTION_PICK).apply {
@@ -173,12 +176,28 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    public fun sendResults(view: View)
+    override fun onPrintTableCSV(dialog: DialogFragment?)
+    {
+        sendResults(ClassActions.FileType.TABLE)
+    }
+
+    override fun onPrintFlatCSV(dialog : DialogFragment?)
+    {
+        sendResults(ClassActions.FileType.FLAT)
+    }
+
+    private fun decideFileType()
+    {
+        val decideFileType = DecideTableOrFlatCSV()
+        val fragmentManager = supportFragmentManager
+        decideFileType.show(fragmentManager, "decideFileType")
+    }
+
+    public fun sendResults(which : ClassActions.FileType)
     {
 
         val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
-        var allObservations : String = observationFragment.observationsAsString()
+        var allObservations : String = observationFragment.observationsAsString(which)
 
         val fileToWrite : File? = saveStringAsFile(allObservations)
         if(fileToWrite!=null)
@@ -192,7 +211,7 @@ class MainActivity : AppCompatActivity(),
                 Intent.EXTRA_TEXT,
                 "The attachement includes the results from the observation."
             )
-            email.setType("message/rfc822");
+            email.setType("message/rfc822")
             try {
                 val contentUri: Uri = getUriForFile(
                     applicationContext,
@@ -204,8 +223,8 @@ class MainActivity : AppCompatActivity(),
                     contentUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
-                email.putExtra(Intent.EXTRA_STREAM, contentUri);
-                startActivity(Intent.createChooser(email, "Choose an Email client :"));
+                email.putExtra(Intent.EXTRA_STREAM, contentUri)
+                startActivity(Intent.createChooser(email, "Choose an Email client :"))
             }
             catch (e : IllegalArgumentException)
             {
