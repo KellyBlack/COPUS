@@ -210,8 +210,7 @@ class ClassActions : Fragment(),
             if(this.localView!= null)
             {
                 val checkbox: CheckBox = this.localView!!.findViewById<CheckBox>(checkboxID)
-                if (checkbox != null)
-                    checkbox.isChecked = false
+                checkbox.isChecked = false
             }
         }
 
@@ -219,9 +218,15 @@ class ClassActions : Fragment(),
         {
             if(this.localView!= null)
             {
-                val spinnerBox: Spinner? = this.localView!!.findViewById<Spinner>(spinnerBoxID)
-                if (spinnerBox != null)
-                    spinnerBox.setSelection(0)
+                try {
+                    val spinnerBox: Spinner? = this.localView?.findViewById<Spinner>(spinnerBoxID)
+                    if(spinnerBox!=null)
+                        spinnerBox.setSelection(0)
+                }
+                catch ( e: NullPointerException)
+                {
+                    continue
+                }
             }
         }
 

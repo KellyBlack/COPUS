@@ -128,11 +128,12 @@ class MainActivity : AppCompatActivity(),
     {
         val textLabel = findViewById<TextView>(R.id.timerTextLabel)
         val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
+        val periodText = "(${period})"
         observationFragment.pushCurrentState()
         if(period<0)
             textLabel.text = ""
         else
-            textLabel.text = "(${period})"
+            textLabel.text = periodText
     }
 
     public fun startButton(view: View)
@@ -197,7 +198,7 @@ class MainActivity : AppCompatActivity(),
     {
 
         val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
-        var allObservations : String = observationFragment.observationsAsString(which)
+        val allObservations : String = observationFragment.observationsAsString(which)
 
         val fileToWrite : File? = saveStringAsFile(allObservations)
         if(fileToWrite!=null)
