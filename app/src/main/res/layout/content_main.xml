@@ -79,7 +79,7 @@
             android:paddingLeft="20sp"
             android:paddingRight="20sp"
             android:singleLine="true"
-            android:background="@drawable/button_details"
+
             android:text="@string/Timer_Start" />
 
 

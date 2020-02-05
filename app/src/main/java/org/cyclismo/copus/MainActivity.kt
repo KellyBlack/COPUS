@@ -5,6 +5,7 @@ package org.cyclismo.copus
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.lang.RuntimeException
 import java.nio.charset.Charset
 
 
@@ -30,8 +32,6 @@ class MainActivity : AppCompatActivity(),
     StopTimerDialog.StopNoticeDialogListener,
     DecideTableOrFlatCSV.DecideTypeCSVFile
 {
-
-
 
     private var startButton : Button? = null
     private lateinit var requestFileIntent: Intent
@@ -53,6 +53,15 @@ class MainActivity : AppCompatActivity(),
         }
 
         this.startButton = findViewById<Button>(R.id.button)
+        if(android.os.Build.VERSION.SDK_INT>android.os.Build.VERSION_CODES.LOLLIPOP) {
+            try {
+
+                val drawing = getDrawable(R.drawable.button_details) //21
+                this.startButton!!.setBackground(drawing)
+            } catch (e: RuntimeException) {
+
+            }
+        }
 
     }
 
