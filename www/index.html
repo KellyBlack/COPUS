@@ -24,6 +24,7 @@
       <li><a href="#copus">COPUS</a></li>
       <li><a href="./screenshots.html">Screenshots</a></li>
       <li><a href="#directions">Directions</a></li>
+      <li><a href="#files">CSV Files</a></li>
       <li><a href="#about">About</a></li>
     </ul>
   </nav>
@@ -51,6 +52,13 @@
       <p>More information about the protocol is available at <a href="http://www.cwsei.ubc.ca/resources/COPUS.htm">Carl Wieman Science Initiative at the University of British Columbia</a>.</p>
       <p>There is one difference in the app and the protocol. This app allows you to specify student engagements for each student status. If you do not like this simply use the top student engagement level and ignore the others.</p>
         
+    </section>
+
+    <section>
+      <h2><a name="files">CSV Files</a></h2>
+      <p>At the end of an observation you can send the results via an email to yourself and then download the file to another computer. The observations are saved in a CSV file, and there are two options. The first is to save the observations in a table. When you open the file as a spreadsheet it will look similar to the format of the standard grid. If you noted that an activity occured, there will be a 1 in the coresponding cell, otherwise there will be a 0 (zero). If you indicated the student involvement, that will be included in the adjacent cell.</p>
+      <p>The other option is to save the results as a flat file. In a flat file there are only four columns, the time period, the activity, whether or not it as a student or an instructor observation, and the level of engagement if it was indicated. The table format is easier to examine by eye, but the flat file is better suited for use with a statistical package.</p>
+      <p>Two example files are available. The two files come from the same observation. The <a href="csv/copus.csv">first version</a> is the table format, and the <a href="csv/copus_flatfile.csv">second version</a> is the flat file format. A <a href="csv/convertTable2Flat.py">python script</a> is also available, and it can be used to convert a file in the table format into a file in the flat format.</p>
     </section>
 
     <section>
