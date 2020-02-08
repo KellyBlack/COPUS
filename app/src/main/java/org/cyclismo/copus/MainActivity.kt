@@ -49,6 +49,9 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.lang.RuntimeException
 import java.nio.charset.Charset
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(),
@@ -60,6 +63,7 @@ class MainActivity : AppCompatActivity(),
     private var startButton : Button? = null
     private lateinit var requestFileIntent: Intent
     private lateinit var inputPFD: ParcelFileDescriptor
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +95,8 @@ class MainActivity : AppCompatActivity(),
 
             }
         }
+
+
 
     }
 
@@ -295,9 +301,19 @@ class MainActivity : AppCompatActivity(),
         // format.
         val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
         val allObservations : String = observationFragment.observationsAsString(which)
+        var fileToWrite : File?
 
         // Save the information to a file.
-        val fileToWrite : File? = saveStringAsFile(allObservations)
+        try
+        {
+            fileToWrite = saveStringAsFile(allObservations)
+        }
+        catch(e:FileNotFoundException)
+        {
+            // TODO exit here more gracefully
+            return
+        }
+
         if(fileToWrite!=null)
         {
             // The file has been saved. Now call up the email application and
@@ -343,14 +359,16 @@ class MainActivity : AppCompatActivity(),
         val directoryFile: File = File(filesDir,"observations")
         directoryFile.mkdirs()
 
-        val fileToWrite : File = File(directoryFile,"copus.csv")
+        val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
+        val fileName : String = "copus_${theDateStamp.format(Calendar.getInstance().time)}.csv"
+        var fileToWrite: File = File(directoryFile,fileName)
         val outputStream : FileOutputStream = FileOutputStream(fileToWrite)
         //outputStream = openFileOutput("copusTempFile", Context.MODE_PRIVATE)
         outputStream.write(contents.toByteArray(Charset.defaultCharset()),0,contents.length)
         outputStream.flush()
         outputStream.close()
 
-        return(File(directoryFile,"copus.csv"))
+        return(File(directoryFile,fileName))
     }
 
 
