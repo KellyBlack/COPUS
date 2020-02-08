@@ -23,6 +23,13 @@ package org.cyclismo.copus
 
  */
 
+/* ***************************************************************************
+
+    This class is used to check to see when the current two minute interval
+    has ended and a new one is about to start up.
+
+    ***************************************************************************  */
+
 
 import android.os.SystemClock
 import android.widget.Chronometer

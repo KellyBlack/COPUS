@@ -22,6 +22,14 @@
 
  */
 
+/* ***************************************************************************
+
+    This class is used to display a notice when the user clicks the stop
+    button and ends an observation.
+
+    ***************************************************************************  */
+
+
 package org.cyclismo.copus
 
 import android.app.Dialog

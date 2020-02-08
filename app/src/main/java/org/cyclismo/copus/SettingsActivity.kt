@@ -22,6 +22,13 @@
 
  */
 
+/* ***************************************************************************
+
+    This class is used to display a list of settings that are available
+    for the user to customize.
+
+    ***************************************************************************  */
+
 
 package org.cyclismo.copus
 

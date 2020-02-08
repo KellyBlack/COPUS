@@ -22,6 +22,13 @@
 
  */
 
+/* ***************************************************************************
+
+    This class is used to display a list of options for what format to use
+    when saving the file. The options are to save as a flat file or as a table.
+
+    ***************************************************************************  */
+
 package org.cyclismo.copus
 
 import android.app.Dialog

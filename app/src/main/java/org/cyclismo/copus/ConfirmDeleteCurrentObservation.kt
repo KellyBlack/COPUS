@@ -22,6 +22,14 @@
 
  */
 
+/* ***************************************************************************
+
+    This class is used to display a dialog. The user is ascked if they
+    really want to start a new session because it will delete the current
+    data set.
+
+    ***************************************************************************  */
+
 package org.cyclismo.copus
 
 import android.app.Dialog
