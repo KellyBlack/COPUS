@@ -22,6 +22,17 @@
 
  */
 
+/* ***************************************************************************
+
+    This class is used to keep track of the portion of the view that displays
+    the options that the user choses. It is a fragment that is displayed in
+    the view of the main activity.
+
+    This fragment includes all of the checkboxes and drop down options.
+    When someone changes one of the checkboxes or drop downs this fragment
+    has to record the result.
+
+    ***************************************************************************  */
 package org.cyclismo.copus
 
 import android.content.Intent
@@ -41,24 +52,36 @@ class ClassActions : Fragment(),
     View.OnClickListener
 {
 
+    // List of possible file formats. Used to share which option
+    // the user chose.
     public enum class FileType
     {
         FLAT,
         TABLE
     }
 
+    // The currentObservation records the current state of the view that the user
+    // can see. The list of pastObservations is the set of all objects that record
+    // what the user chose in the previous intervals.
     private var currentObservation : PeriodicUpdate = PeriodicUpdate()
     private var pastObservations : MutableList<PeriodicUpdate> = mutableListOf<PeriodicUpdate>()
+
+    // Keep track of the view's IDs of the checkboxes and the spinnerboxes. This is used to
+    // avoid repeated calling of the findViewID routine.
     private var checkBoxIDs = arrayOf<Int>()
     private var spinnerBoxIds = arrayOf<Int>()
 
+    // A set of maps that can return the id of an object given the view.
     private var checkBoxViews : MutableMap<View,Int> = mutableMapOf<View,Int>()
     private var spinnerBoxViews : MutableMap<View,Int> = mutableMapOf<View,Int>()
 
+    // A set of text labels that are used so that the id of a view can be used to determine
+    // the label to print when requesting the current state or a past state.
     private var checkBoxLecturerIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
     private var checkBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
     private var spinnerBoxStudentIdentifiers : MutableMap<Int,String> = mutableMapOf<Int,String>()
 
+    // The view of the fragment associated with this class.
     var localView : View? = null
 
 
@@ -69,6 +92,7 @@ class ClassActions : Fragment(),
     private lateinit var viewModel: ClassActionsViewModel
 
     override fun onCreateView(
+        // Function to take the xml file defining this view and expanding it out accordingly.
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -77,18 +101,26 @@ class ClassActions : Fragment(),
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        // Insure that the providers associated with this fragment are correctly set up.
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ClassActionsViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        // At this point the view for this fragment has been created, and it is up
+        // and running. Go though and figure out the IDs of all the views that are
+        // being tracked by this object.
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize the local variables. Save the id of this view, clear
+        // the variables being tracked, and make sure the options are all correct.
         this.localView = view
         this.currentObservation.clearAllValues()
         clearAllCheckboxes()
 
+        // Make a list of the IDs of all the views being tracked.
         this.checkBoxIDs = arrayOf(
             R.id.lecturingCheckbox,
             R.id.rtwCheckbox,
@@ -133,6 +165,9 @@ class ClassActions : Fragment(),
             R.id.otherSpinner
         )
 
+        // Figure out the text label associated with each checkbox for when
+        // the information is printed to a string that will be saved to a file.
+        // This is for the checkboxes associated with the lecturer.
         this.checkBoxLecturerIdentifiers = mutableMapOf<Int,String>(
             R.id.lecturingCheckbox to "Lec",
             R.id.rtwCheckbox  to "RtW",
@@ -148,6 +183,9 @@ class ClassActions : Fragment(),
             R.id.otherCheckbox to "O"
         )
 
+        // Figure out the text label associated with each checkbox for when
+        // the information is printed to a string that will be saved to a file.
+        // This is for the checkboxes associated with the students.
         this.checkBoxStudentIdentifiers = mutableMapOf<Int,String>(
             R.id.studentListeningCheckbox to "L",
             R.id.individualCheckbox to "Ind",
@@ -164,6 +202,9 @@ class ClassActions : Fragment(),
             R.id.studentotherCheckbox to "O"
         )
 
+        // Figure out the text label associated with each spinnerbox for when
+        // the information is printed to a string that will be saved to a file.
+        // This is for the student engagment options for each student checkbox.
         this.spinnerBoxStudentIdentifiers = mutableMapOf<Int,String>(
             R.id.ListeningSpinner to "L",
             R.id.ThinkingSpinnerind to "Ind",
@@ -180,6 +221,8 @@ class ClassActions : Fragment(),
             R.id.otherSpinner to "O"
         )
 
+        // Go through each checkbox and specify which function should be called
+        // when someone clicks on it.
         for(checkBoxID in this.checkBoxIDs)
         {
             val checkboxView : CheckBox =  view.findViewById<CheckBox>(checkBoxID)
@@ -187,6 +230,7 @@ class ClassActions : Fragment(),
             this.checkBoxViews.put(checkboxView,checkBoxID)
         }
 
+        // Ditto for the spinner boxes.
         for(spinnerBoxID in this.spinnerBoxIds)
         {
             val spinnerView : Spinner = view.findViewById<Spinner>(spinnerBoxID)
@@ -199,22 +243,29 @@ class ClassActions : Fragment(),
 
     override fun onNothingSelected(parent: AdapterView<out Adapter>?)
     {
+        // Someone deselected all the options for a spinner box.
+        // Clear the option in the current state
         this.currentObservation.setEngagementValue(this.spinnerBoxStudentIdentifiers[parent?.id] ?: "","")
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long)
     {
+        // Someone selected an option for one of the spinner boxes.
+        // Set the option in the current state.
         val theSpinner = parent as Spinner
         this.currentObservation.setEngagementValue(this.spinnerBoxStudentIdentifiers[parent.id] ?: "",theSpinner.getSelectedItem().toString())
     }
 
     public fun numberObservations() : Int
     {
+        // Called by a parent object to determine how many observations have been recorded.
         return(this.pastObservations.size)
     }
 
     public fun pushCurrentState()
     {
+        // Take the current set of observations and save them on the history stack.
+        // Clear the view so that we can start from scratch.
         this.pastObservations.add(this.currentObservation)
         this.currentObservation = PeriodicUpdate()
         clearAllCheckboxes()
@@ -222,13 +273,17 @@ class ClassActions : Fragment(),
 
     public fun startNewObservation()
     {
+        // Looks like we are about to start a new set of observations. Clear
+        // the view and reset the past observations.
         this.pastObservations.clear()
         clearAllCheckboxes()
     }
 
     public fun clearAllCheckboxes()
     {
+        // Reset the view so that nothing is checked and the spinner boxes are blanked out.
 
+        // First blank out the checkboxes.
         for(checkboxID in this.checkBoxIDs)
         {
             if(this.localView!= null)
@@ -238,6 +293,7 @@ class ClassActions : Fragment(),
             }
         }
 
+        // Next blank out the spinner boxes.
         for(spinnerBoxID in this.spinnerBoxIds)
         {
             if(this.localView!= null)
@@ -254,21 +310,28 @@ class ClassActions : Fragment(),
             }
         }
 
+        // Finally reset the set of current observations.
         this.currentObservation.clearAllValues()
 
     }
+
+
     override fun onClick(view : View)
     {
+        // One of the checkboxes was clicked. Determine if it was for a student or an instructor.
+        // Record the value in the current state.
         if(view is CheckBox)
         {
             val checkValue : Boolean = view.isChecked
 
             if(this.checkBoxLecturerIdentifiers.containsKey(view.id))
             {
+                // This is a lecturer checkbox. Set the current value for this.
                 this.currentObservation.setLecturerValue(this.checkBoxLecturerIdentifiers[view.id] ?: "",checkValue)
             }
             else if (this.checkBoxStudentIdentifiers.containsKey(view.id))
             {
+                // This is a student checkbox. Set the current value for this.
                 this.currentObservation.setStudentValue(this.checkBoxStudentIdentifiers[view.id] ?: "",checkValue)
             }
         }
@@ -276,11 +339,17 @@ class ClassActions : Fragment(),
 
     public fun observationsAsString(which : FileType) : String
     {
+        // Someone has requested that the current set of observations be converted into a string and
+        // saved in an appropriate file format.
+
         var period : Int = 0
         var allObservations: String = ""
 
         if(which == FileType.FLAT)
         {
+            // They want a flat file. Go though the observations for each period and
+            // convert each one to an appropriate string.
+            // Append all the results together.
             allObservations = this.currentObservation.flatTableHeader() + "\n"
             for (pastObs in this.pastObservations)
             {
@@ -290,6 +359,9 @@ class ClassActions : Fragment(),
         }
         else
         {
+            // They want the data as a table. Go though the observations for each period and
+            // convert each one to an appropriate string.
+            // Append all the results together.
             allObservations = this.currentObservation.headerToString() + "\n"
             for (pastObs in this.pastObservations) {
                 period += 1
@@ -301,6 +373,7 @@ class ClassActions : Fragment(),
 
     public fun isClear() : Boolean
     {
+        // The parent object wants to know if the current state has any options checked off.
         return(this.currentObservation.isClear())
     }
 
