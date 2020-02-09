@@ -8,8 +8,13 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.activity_fileselect_detail.*
 import kotlinx.android.synthetic.main.fileselect_detail.*
 import kotlinx.android.synthetic.main.fileselect_detail.view.*
+import java.io.BufferedReader
 import java.io.File
+import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.lang.NullPointerException
+import java.lang.NumberFormatException
+import java.text.SimpleDateFormat
 
 /**
  * A fragment representing a single FileSelect detail screen.
@@ -58,10 +63,31 @@ class FileSelectDetailFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fileselect_detail, container, false)
 
-        // Show the dummy content as text in a TextView.
-        //item?.let {
-            rootView.fileselect_detail.text = fileInfo.length().toString() //it.details
-        //}
+        //item?.let { }
+
+        var numberObservations : Int = 0
+        if (fileInfo.exists()) {
+            fileInfo.forEachLine {
+                numberObservations += 1
+                val columns : List<String> = it.split(",")
+                if (columns.size > 0)
+                {
+                    try {
+                        numberObservations = columns[0].toInt()
+                    }
+                    catch (e:NumberFormatException)
+                    {
+
+                    }
+
+                }
+            }
+        }
+
+        val theDateStamp = SimpleDateFormat("HH:mm yyyy/MM/dd  z ")
+        val modificationDate = theDateStamp.format(fileInfo.lastModified())
+        rootView.fileselect_detail.text = modificationDate.toString() + " (${numberObservations})"
+
         rootView.delete_file.setOnClickListener({ v: View -> delete_file(v)})
         rootView.mail_file.setOnClickListener({ v: View -> send_file(v)})
         rootView.rename_file.setOnClickListener({ v: View -> rename_file(v)})
