@@ -1,10 +1,14 @@
 package org.cyclismo.copus
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.FileProvider
+import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.activity_fileselect_detail.*
 import kotlinx.android.synthetic.main.fileselect_detail.*
 import kotlinx.android.synthetic.main.fileselect_detail.view.*
@@ -113,6 +117,49 @@ class FileSelectDetailFragment : Fragment() {
     fun send_file(view: View)
     {
         println("send file ${fileInfo.absolutePath}")
+        if(fileInfo.exists())
+        {
+            // The file has been saved. Now call up the email application and
+            // make sure it knows the file to include as an attachment.
+            val settings  = PreferenceManager.getDefaultSharedPreferences(activity?.applicationContext)
+            val toAddress : String = settings.getString("defaultEmailTo","") ?: ""
+            val email = Intent(Intent.ACTION_SEND)
+            email.putExtra(Intent.EXTRA_SUBJECT, "COPUS Observation")
+            email.putExtra(Intent.EXTRA_EMAIL,arrayOf(toAddress))
+
+            val theDateStamp = SimpleDateFormat("HH:mm yyyy/MM/dd  z ")
+            val modificationDate = theDateStamp.format(fileInfo.lastModified())
+            email.putExtra(
+                Intent.EXTRA_TEXT,
+                "The attachement includes the results from the observation on ${modificationDate.toString()}."
+            )
+            email.setType("message/rfc822")
+            try {
+                val context = activity!!.applicationContext
+                val contentUri: Uri = FileProvider.getUriForFile(
+                    context,
+                    "org.cyclismo.copus.fileprovider",
+                    fileInfo
+                )
+                context.grantUriPermission(
+                    "org.cyclismo.copus.fileprovider",
+                    contentUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                email.putExtra(Intent.EXTRA_STREAM, contentUri)
+                startActivity(Intent.createChooser(email, "Choose an Email client :"))
+            }
+            catch (e:NullPointerException)
+            {
+
+            }
+            catch (e : IllegalArgumentException)
+            {
+                // oops! Could not get the file for some reason. Just walk away...
+                // TODO - really should be more graceful about this, ya know!
+                //println(e)
+            }
+        }
     }
 
     fun delete_file(view: View)
