@@ -118,6 +118,12 @@ class MainActivity : AppCompatActivity(),
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                 true
             }
+            R.id.action_fileSelect ->
+            {
+                // The user chose the file option to display the files.
+                startActivity(Intent(this@MainActivity,FileSelectListActivity::class.java))
+                true
+            }
             R.id.action_about ->
             {
                 // The user chose the option to display the "about" view
