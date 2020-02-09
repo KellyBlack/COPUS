@@ -10,12 +10,8 @@ import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.activity_fileselect_detail.*
-import kotlinx.android.synthetic.main.fileselect_detail.*
 import kotlinx.android.synthetic.main.fileselect_detail.view.*
-import java.io.BufferedReader
 import java.io.File
-import java.io.FileInputStream
-import java.io.InputStreamReader
 import java.lang.NullPointerException
 import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
@@ -51,12 +47,22 @@ class FileSelectDetailFragment : Fragment() {
                     return
                 }
 
-                val directoryFile: File = File(directory,"observations")
-                baseName = fileName.replace(directoryFile.absolutePath, "").replace(Regex("^/"),"")
-                activity?.toolbar_layout?.title = baseName
-                //val directoryFile: File = File(Context.getFilesDir(),"observations")
-                //this.item = File(directoryFile,it.get(ARG_ITEM_ID))
-                fileInfo = File(fileName)
+                var directoryFile: File? = null
+                try {
+                    directoryFile = getDirectory()
+                }
+                catch(e:NullPointerException)
+                {
+
+                }
+                finally {
+                    fileName = it.get(ARG_ITEM_ID).toString() ?: ""
+                    baseName = fileName.replace(directoryFile!!.absolutePath, "").replace(Regex("^/"),"")
+                    activity?.toolbar_layout?.title = baseName
+                    //val directoryFile: File = File(Context.getFilesDir(),"observations")
+                    //this.item = File(directoryFile,it.get(ARG_ITEM_ID))
+                    fileInfo = File(fileName)
+                }
             }
         }
     }
@@ -94,7 +100,7 @@ class FileSelectDetailFragment : Fragment() {
 
         rootView.delete_file.setOnClickListener({ v: View -> delete_file(v)})
         rootView.mail_file.setOnClickListener({ v: View -> send_file(v)})
-        rootView.rename_file.setOnClickListener({ v: View -> rename_file(v)})
+        rootView.rename_file.setOnClickListener({ v: View -> request_rename_file(v)})
 
         return rootView
     }
@@ -109,9 +115,49 @@ class FileSelectDetailFragment : Fragment() {
         const val ARG_ITEM_ID = "item_id"
     }
 
-    fun rename_file(view: View)
+    fun getDirectory() : File?
     {
-        println("Rename file ${fileInfo.absolutePath}")
+
+        var directory: File
+        try {
+            directory = activity!!.filesDir
+        } catch (e: NullPointerException) {
+            return(null)
+        }
+
+        val directoryFile: File = File(directory, "observations")
+        return(directoryFile)
+    }
+
+    fun request_rename_file(view: View)
+    {
+    }
+
+    fun rename_file()
+    {
+        var directoryFile: File? = null
+        try {
+            directoryFile = getDirectory()
+        }
+        catch(e:NullPointerException)
+        {
+            return
+        }
+
+        baseName = "bubbas party"
+        try {
+            fileName = directoryFile!!.absolutePath + "/" + baseName
+        }
+        catch (e:NullPointerException)
+        {
+            return
+        }
+
+        activity?.toolbar_layout?.title = baseName
+        //val directoryFile: File = File(Context.getFilesDir(),"observations")
+        //this.item = File(directoryFile,it.get(ARG_ITEM_ID))
+        val newFile = File(fileName)
+        fileInfo.renameTo(newFile)
     }
 
     fun send_file(view: View)
