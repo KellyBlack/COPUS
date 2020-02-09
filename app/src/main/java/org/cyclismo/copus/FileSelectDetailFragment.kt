@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.activity_fileselect_detail.*
+import kotlinx.android.synthetic.main.fileselect_detail.*
 import kotlinx.android.synthetic.main.fileselect_detail.view.*
 import java.io.File
 import java.lang.NullPointerException
@@ -61,9 +62,14 @@ class FileSelectDetailFragment : Fragment() {
         //item?.let {
             rootView.fileselect_detail.text = fileInfo.length().toString() //it.details
         //}
+        rootView.delete_file.setOnClickListener({ v: View -> delete_file(v)})
+        rootView.mail_file.setOnClickListener({ v: View -> send_file(v)})
+        rootView.rename_file.setOnClickListener({ v: View -> rename_file(v)})
 
         return rootView
     }
+
+
 
     companion object {
         /**
@@ -72,4 +78,20 @@ class FileSelectDetailFragment : Fragment() {
          */
         const val ARG_ITEM_ID = "item_id"
     }
+
+    fun rename_file(view: View)
+    {
+        println("Rename file ${fileInfo.absolutePath}")
+    }
+
+    fun send_file(view: View)
+    {
+        println("send file ${fileInfo.absolutePath}")
+    }
+
+    fun delete_file(view: View)
+    {
+        println("Delete file ${fileInfo.absolutePath}")
+    }
+
 }

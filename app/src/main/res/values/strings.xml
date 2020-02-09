@@ -104,5 +104,8 @@
     </string>
     <string name="title_fileselect_list">Files</string>
     <string name="title_fileselect_detail">FileSelect Detail</string>
+    <string name="fileselect_detail_delete">Delete File</string>
+    <string name="fileselect_detail_mail">Send/Mail File</string>
+    <string name="fileselect_detail_rename">Rename File</string>
 
 </resources>
