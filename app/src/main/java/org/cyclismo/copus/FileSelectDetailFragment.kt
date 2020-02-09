@@ -133,7 +133,7 @@ class FileSelectDetailFragment : Fragment() {
     {
     }
 
-    fun rename_file()
+    fun rename_file(newFileName : String)
     {
         var directoryFile: File? = null
         try {
@@ -144,9 +144,9 @@ class FileSelectDetailFragment : Fragment() {
             return
         }
 
-        baseName = "bubbas party"
+        var intendedFileName : String = ""
         try {
-            fileName = directoryFile!!.absolutePath + "/" + baseName
+            intendedFileName = directoryFile!!.absolutePath + "/" + newFileName
         }
         catch (e:NullPointerException)
         {
@@ -156,6 +156,8 @@ class FileSelectDetailFragment : Fragment() {
         activity?.toolbar_layout?.title = baseName
         //val directoryFile: File = File(Context.getFilesDir(),"observations")
         //this.item = File(directoryFile,it.get(ARG_ITEM_ID))
+        fileName = intendedFileName
+        baseName = newFileName
         val newFile = File(fileName)
         fileInfo.renameTo(newFile)
     }
