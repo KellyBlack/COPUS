@@ -1,5 +1,7 @@
 package org.cyclismo.copus
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -213,6 +215,28 @@ class FileSelectDetailFragment : Fragment() {
     fun delete_file(view: View)
     {
         println("Delete file ${fileInfo.absolutePath}")
+
+        try {
+            val builder: AlertDialog.Builder = activity!!.let { AlertDialog.Builder(it) }
+            builder.apply {
+                setPositiveButton("Delete",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        println("Delete $fileName")
+                    })
+                setNegativeButton("Cancel",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        println("Do not deelte $fileName")
+                    })
+            }
+            builder.setMessage("Do you really want to delete this file?")
+                .setTitle("Delete $baseName")
+            val dialog: AlertDialog = builder!!.create()
+            dialog.show()
+        }
+        catch (e:NullPointerException)
+        {
+
+        }
     }
 
 }
