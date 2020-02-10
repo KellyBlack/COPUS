@@ -136,17 +136,18 @@ class FileSelectDetailFragment : Fragment() {
         try {
             val builder: AlertDialog.Builder = activity!!.let { AlertDialog.Builder(it) }
             builder.apply {
-                setPositiveButton("Delete",
+                setPositiveButton(R.string.fileselect_rename,
                     DialogInterface.OnClickListener { dialog, id ->
                         println("Delete $fileName")
                     })
-                setNegativeButton("Cancel",
+                setNegativeButton(R.string.fileselect_cancel,
                     DialogInterface.OnClickListener { dialog, id ->
                         println("Do not deelte $fileName")
                     })
             }
-            builder.setMessage("Do you really want to delete this file?")
-                .setTitle("Delete $baseName")
+            val titlePrefix : String = resources.getString(R.string.fileselect_rename_title)
+            builder.setMessage(R.string.fileselect_rename_message)
+                .setTitle("${titlePrefix} $baseName")
             val dialog: AlertDialog = builder!!.create()
             dialog.show()
         }
@@ -240,7 +241,7 @@ class FileSelectDetailFragment : Fragment() {
         try {
             val builder: AlertDialog.Builder = activity!!.let { AlertDialog.Builder(it) }
             builder.apply {
-                setPositiveButton(R.string.fileselect_cancel,
+                setPositiveButton(R.string.fileselect_delete,
                     DialogInterface.OnClickListener { dialog, id ->
                         println("Delete $fileName")
                     })
@@ -250,7 +251,7 @@ class FileSelectDetailFragment : Fragment() {
                     })
             }
             builder.setMessage(R.string.fileselect_delete_message)
-                .setTitle("${R.string.fileselect_delete_title}  $baseName")
+                .setTitle("${resources.getString(R.string.fileselect_delete_title)}  $baseName")
             val dialog: AlertDialog = builder!!.create()
             dialog.show()
         }
