@@ -14,9 +14,9 @@ import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.activity_fileselect_detail.*
 import kotlinx.android.synthetic.main.fileselect_detail.view.*
 import java.io.File
-import java.lang.NullPointerException
 import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
+import kotlin.NullPointerException
 
 /**
  * A fragment representing a single FileSelect detail screen.
@@ -188,7 +188,6 @@ class FileSelectDetailFragment : Fragment() {
 
     fun send_file(view: View)
     {
-        println("send file ${fileInfo.absolutePath}")
         if(fileInfo.exists())
         {
             // The file has been saved. Now call up the email application and
@@ -243,11 +242,20 @@ class FileSelectDetailFragment : Fragment() {
             builder.apply {
                 setPositiveButton(R.string.fileselect_delete,
                     DialogInterface.OnClickListener { dialog, id ->
-                        println("Delete $fileName")
+                        try {
+                            fileInfo!!.delete()
+                            activity!!.onBackPressed()
+                        }
+                        catch (e:NullPointerException)
+                        {
+
+                        }
+
+
                     })
                 setNegativeButton(R.string.fileselect_cancel,
                     DialogInterface.OnClickListener { dialog, id ->
-                        println("Do not deelte $fileName")
+
                     })
             }
             builder.setMessage(R.string.fileselect_delete_message)
