@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.content.FileProvider
 import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.activity_fileselect_detail.*
@@ -135,14 +136,31 @@ class FileSelectDetailFragment : Fragment() {
     {
         try {
             val builder: AlertDialog.Builder = activity!!.let { AlertDialog.Builder(it) }
+            val inflater = requireActivity().layoutInflater;
             builder.apply {
+                val view : View = inflater.inflate(R.layout.rename_fileselect_detail,null)
+                val textEdit : EditText = view.findViewById<EditText>(R.id.editText)
+                textEdit.setText(baseName)
+                setView(view)
                 setPositiveButton(R.string.fileselect_rename,
-                    DialogInterface.OnClickListener { dialog, id ->
-                        println("Delete $fileName")
+                    DialogInterface.OnClickListener { dialog : DialogInterface, id ->
+                        try {
+                            val alert: AlertDialog = dialog as AlertDialog
+                            //val textEdit: EditText = alert!!.findViewById<EditText>(R.id.editText)
+                            rename_file(textEdit.getText().toString())
+                        }
+                        catch(e:ClassCastException)
+                        {
+
+                        }
+                        catch (e: NullPointerException)
+                        {
+
+                        }
                     })
                 setNegativeButton(R.string.fileselect_cancel,
                     DialogInterface.OnClickListener { dialog, id ->
-                        println("Do not deelte $fileName")
+
                     })
             }
             val titlePrefix : String = resources.getString(R.string.fileselect_rename_title)
