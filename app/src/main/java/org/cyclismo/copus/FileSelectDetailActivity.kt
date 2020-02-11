@@ -5,7 +5,9 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.activity_fileselect_detail.*
+import java.lang.NullPointerException
 
 /**
  * An activity representing a single FileSelect detail screen. This
@@ -20,10 +22,12 @@ class FileSelectDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_fileselect_detail)
         setSupportActionBar(detail_toolbar)
 
+        /*
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+        */
 
         // Show the Up button in the action bar.
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -69,4 +73,21 @@ class FileSelectDetailActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+
+    fun changeTitle(newTitle:String)
+    {
+        try {
+            val actionBar = supportActionBar!!
+            actionBar.title = newTitle
+            actionBar.setTitle(newTitle)
+            actionBar.subtitle = getString(R.string.fileselect_name_changed)
+            val topBar = findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout) //detail_toolbar)
+            topBar.title = newTitle
+        }
+        catch(e:NullPointerException)
+        {
+
+        }
+
+    }
 }

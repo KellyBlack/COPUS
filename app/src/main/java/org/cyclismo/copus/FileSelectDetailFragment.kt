@@ -105,6 +105,7 @@ class FileSelectDetailFragment : Fragment() {
         rootView.mail_file.setOnClickListener({ v: View -> send_file(v)})
         rootView.rename_file.setOnClickListener({ v: View -> request_rename_file(v)})
 
+
         return rootView
     }
 
@@ -195,13 +196,23 @@ class FileSelectDetailFragment : Fragment() {
             return
         }
 
-        activity?.toolbar_layout?.title = baseName
         //val directoryFile: File = File(Context.getFilesDir(),"observations")
         //this.item = File(directoryFile,it.get(ARG_ITEM_ID))
         fileName = intendedFileName
         baseName = newFileName
         val newFile = File(fileName)
         fileInfo.renameTo(newFile)
+
+        try {
+            val parent : FileSelectDetailActivity = activity!! as FileSelectDetailActivity
+            parent.changeTitle(baseName)
+            //parent.toolbar_layout?.title = baseName
+        }
+        catch (e:java.lang.NullPointerException)
+        {
+
+        }
+
     }
 
     fun send_file(view: View)

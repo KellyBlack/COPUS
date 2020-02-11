@@ -114,5 +114,6 @@
     <string name="fileselect_rename">Rename</string>
     <string name="fileselect_rename_message">What should the new name for the file be?</string>
     <string name="fileselect_rename_title">Rename: </string>
+    <string name="fileselect_name_changed"></string>
 
 </resources>
