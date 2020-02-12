@@ -209,6 +209,13 @@ class MainActivity : AppCompatActivity(),
             textLabel.text = periodText
     }
 
+    private fun determineFileBaseName(suffix:String="") : String
+    {
+        // Set the base name for the file that will be created when the observation is saved.
+        val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
+        return("copus_${theDateStamp.format(Calendar.getInstance().time)}${suffix}")
+    }
+
     public fun startButton(view: View)
     {
         /*
@@ -233,7 +240,7 @@ class MainActivity : AppCompatActivity(),
 
                 // Set the base name for the file that will be created when the observation is saved.
                 val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
-                this.baseFileName = "copus_${theDateStamp.format(Calendar.getInstance().time)}${suffix}"
+                this.baseFileName = determineFileBaseName()
 
                 if(observationFragment.numberObservations() > 0)
                 {
@@ -372,7 +379,7 @@ class MainActivity : AppCompatActivity(),
         directoryFile.mkdirs()
 
         val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
-        val fileName : String = "copus_${theDateStamp.format(Calendar.getInstance().time)}${suffix}.csv"
+        val fileName : String = "${determineFileBaseName()}.csv"
         var fileToWrite: File = File(directoryFile,fileName)
         val outputStream : FileOutputStream = FileOutputStream(fileToWrite)
         //outputStream = openFileOutput("copusTempFile", Context.MODE_PRIVATE)
