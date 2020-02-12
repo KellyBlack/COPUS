@@ -24,12 +24,10 @@
 
 package org.cyclismo.copus
 
-//import android.util.Log
 //import com.google.android.material.snackbar.Snackbar
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
@@ -49,7 +47,6 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.lang.RuntimeException
 import java.nio.charset.Charset
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,13 +61,16 @@ class MainActivity : AppCompatActivity(),
     private lateinit var requestFileIntent: Intent
     private lateinit var inputPFD: ParcelFileDescriptor
 
+    private var timerRunning : Boolean = false
+    private var baseFileName : String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { _ ->
+        fab.setOnClickListener { _: View ->
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             //    .setAction("Action", null).show()
 
@@ -229,6 +229,11 @@ class MainActivity : AppCompatActivity(),
             if (view.text == getString(R.string.Timer_Start))
             {
                 // The timer needs to be started.
+                this.timerRunning = true
+
+                // Set the base name for the file that will be created when the observation is saved.
+                val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
+                this.baseFileName = "copus_${theDateStamp.format(Calendar.getInstance().time)}${suffix}"
 
                 if(observationFragment.numberObservations() > 0)
                 {
@@ -249,6 +254,7 @@ class MainActivity : AppCompatActivity(),
             else
             {
                 // We need to stop the timer.
+                this.timerRunning = false
 
                 if(!observationFragment.isClear())
                 {
@@ -358,7 +364,7 @@ class MainActivity : AppCompatActivity(),
 
     }
 
-    private fun saveStringAsFile(contents:String) : File
+    private fun saveStringAsFile(contents:String,suffix:String="") : File
     {
         // Take the set of observations as a string and save them to a file.
         // Return a File object that points to the file just created.
@@ -366,7 +372,7 @@ class MainActivity : AppCompatActivity(),
         directoryFile.mkdirs()
 
         val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
-        val fileName : String = "copus_${theDateStamp.format(Calendar.getInstance().time)}.csv"
+        val fileName : String = "copus_${theDateStamp.format(Calendar.getInstance().time)}${suffix}.csv"
         var fileToWrite: File = File(directoryFile,fileName)
         val outputStream : FileOutputStream = FileOutputStream(fileToWrite)
         //outputStream = openFileOutput("copusTempFile", Context.MODE_PRIVATE)

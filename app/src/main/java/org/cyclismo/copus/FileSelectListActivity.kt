@@ -83,7 +83,7 @@ class FileSelectListActivity : AppCompatActivity() {
     private fun setupRecyclerView(recyclerView: RecyclerView)
     {
         val directoryFile: File = File(filesDir,"observations")
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, directoryFile.listFiles(), twoPane)
+        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, directoryFile.listFiles().sortedByDescending {it.lastModified()}.toTypedArray(), twoPane)
     }
 
     class SimpleItemRecyclerViewAdapter(
