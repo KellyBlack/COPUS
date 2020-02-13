@@ -186,6 +186,9 @@ class MainActivity : AppCompatActivity(),
         // The timer needs to be started.
         this.timerRunning = true
 
+        // Set the base name for the file that will be created when the observation is saved.
+        val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
+        this.baseFileName = determineFileBaseName()
 
         // The timer react object will keep track of the last time the timer rolled over to the next
         // two minute time, and the base is used to check how long that has happened. This needs to
@@ -255,9 +258,6 @@ class MainActivity : AppCompatActivity(),
 
             if (view.text == getString(R.string.Timer_Start))
             {
-                // Set the base name for the file that will be created when the observation is saved.
-                val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
-                this.baseFileName = determineFileBaseName()
 
                 if(observationFragment.numberObservations() > 0)
                 {
@@ -338,7 +338,7 @@ class MainActivity : AppCompatActivity(),
 
         }
 
-        else if (this.baseFileName.length ==0)
+        else if (this.baseFileName.length == 0)
         {
             // There is no current file. Put up a notice saying there is nothing to send.
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
