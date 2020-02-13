@@ -49,12 +49,18 @@ import java.lang.RuntimeException
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.TimeUnit
+
+
 
 
 class MainActivity : AppCompatActivity(),
     ConfirmDeleteCurrentObservation.DeleteNoticeDialogListener,
     StopTimerDialog.StopNoticeDialogListener,
+    //Runnable,
     DecideTableOrFlatCSV.DecideTypeCSVFile
+
 {
 
     private var startButton : Button? = null
@@ -96,9 +102,17 @@ class MainActivity : AppCompatActivity(),
             }
         }
 
-
+        //val exec = ScheduledThreadPoolExecutor(1)
+        //exec.scheduleAtFixedRate(this,0,3,TimeUnit.SECONDS)
 
     }
+
+
+/*
+    override public fun run() {
+        println("Hello world");
+    }
+*/
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -166,6 +180,10 @@ class MainActivity : AppCompatActivity(),
         view.text = getString(R.string.Timer_End)
         textLabel.text = ""
         counter.format = getString(R.string.Time_Stamp_Label)
+
+        // The timer needs to be started.
+        this.timerRunning = true
+
 
         // The timer react object will keep track of the last time the timer rolled over to the next
         // two minute time, and the base is used to check how long that has happened. This needs to
@@ -235,9 +253,6 @@ class MainActivity : AppCompatActivity(),
 
             if (view.text == getString(R.string.Timer_Start))
             {
-                // The timer needs to be started.
-                this.timerRunning = true
-
                 // Set the base name for the file that will be created when the observation is saved.
                 val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
                 this.baseFileName = determineFileBaseName()
@@ -303,6 +318,14 @@ class MainActivity : AppCompatActivity(),
         // The user hit the email button. We need to figure out whether the
         // person wants to send a table or a flat file. Put up a dialog with
         // the options.
+
+        if(this.timerRunning)
+        {
+            // The timer is running. post a message saying to stop
+            // the timer before trying to save.
+
+            return
+        }
         val decideFileType = DecideTableOrFlatCSV()
         val fragmentManager = supportFragmentManager
         decideFileType.show(fragmentManager, "decideFileType")
