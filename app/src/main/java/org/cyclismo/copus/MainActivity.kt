@@ -293,6 +293,10 @@ class MainActivity : AppCompatActivity(),
                 observationFragment.clearAllCheckboxes()
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+                // Save the results to a flat file and a table
+                saveCurrentObservation(ClassActions.FileType.FLAT,"_flat")
+                saveCurrentObservation(ClassActions.FileType.TABLE,"_table")
+
                 // Stop the timer and let the user know that nothing has been saved yet.
                 val stopTimerNotice = StopTimerDialog()
                 val fragmentManager = supportFragmentManager
@@ -361,7 +365,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    private fun saveCurrentObservation(which : ClassActions.FileType) : File?
+    private fun saveCurrentObservation(which : ClassActions.FileType,suffix : String = "") : File?
     {
         val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
         val allObservations : String = observationFragment.observationsAsString(which)
@@ -370,7 +374,7 @@ class MainActivity : AppCompatActivity(),
         // Save the information to a file.
         try
         {
-            fileToWrite = saveStringAsFile(allObservations)
+            fileToWrite = saveStringAsFile(allObservations,suffix)
         }
         catch(e:FileNotFoundException)
         {
@@ -393,18 +397,7 @@ class MainActivity : AppCompatActivity(),
         // format.
         val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
         val allObservations : String = observationFragment.observationsAsString(which)
-        var fileToWrite : File?
-
-        // Save the information to a file.
-        try
-        {
-            fileToWrite = saveStringAsFile(allObservations)
-        }
-        catch(e:FileNotFoundException)
-        {
-            // TODO exit here more gracefully
-            return
-        }
+        var fileToWrite : File? = saveCurrentObservation(which)
 
         if(fileToWrite!=null)
         {
@@ -451,8 +444,7 @@ class MainActivity : AppCompatActivity(),
         val directoryFile: File = File(filesDir,"observations")
         directoryFile.mkdirs()
 
-        val theDateStamp = SimpleDateFormat("yyyy-MM-dd HH:mm z")
-        val fileName : String = "${determineFileBaseName()}.csv"
+        val fileName : String = "${this.baseFileName}${suffix}.csv"
         var fileToWrite: File = File(directoryFile,fileName)
         val outputStream : FileOutputStream = FileOutputStream(fileToWrite)
         //outputStream = openFileOutput("copusTempFile", Context.MODE_PRIVATE)
