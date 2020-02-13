@@ -338,6 +338,21 @@ class MainActivity : AppCompatActivity(),
 
         }
 
+        else if (this.baseFileName.length ==0)
+        {
+            // There is no current file. Put up a notice saying there is nothing to send.
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.apply {
+                setPositiveButton(R.string.email_cannot_send_resume,
+                    DialogInterface.OnClickListener { dialog, id ->
+                    })
+            }
+            builder.setMessage(R.string.email_cannot_send_no_observation)
+                .setTitle(resources.getString(R.string.email_cannot_send_title))
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+
+        }
         else
         {
             val decideFileType = DecideTableOrFlatCSV()

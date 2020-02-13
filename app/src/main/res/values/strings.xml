@@ -80,6 +80,10 @@
     <string name="email_cannot_send_title">Cannot send a file</string>
     <string name="email_cannot_send_resume">Resume</string>
 
+    <!-- Strings for the error dialog when someone presses the email button and there is no observation-->
+    <string name="email_cannot_send_no_observation">There is no  observation to send. Please conduct an observation before trying to send.</string>
+
+
     <!-- Strings for the help screen 0-->
     <string name="help_title_bar">Help</string>
     <string name="help_page"><![CDATA[
