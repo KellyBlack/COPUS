@@ -51,8 +51,8 @@ import java.lang.RuntimeException
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.ScheduledThreadPoolExecutor
-import java.util.concurrent.TimeUnit
+//import java.util.concurrent.ScheduledThreadPoolExecutor
+//import java.util.concurrent.TimeUnit
 
 
 
@@ -359,6 +359,26 @@ class MainActivity : AppCompatActivity(),
             val fragmentManager = supportFragmentManager
             decideFileType.show(fragmentManager, "decideFileType")
         }
+    }
+
+    private fun saveCurrentObservation(which : ClassActions.FileType) : File?
+    {
+        val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
+        val allObservations : String = observationFragment.observationsAsString(which)
+        var fileToWrite : File?
+
+        // Save the information to a file.
+        try
+        {
+            fileToWrite = saveStringAsFile(allObservations)
+        }
+        catch(e:FileNotFoundException)
+        {
+            // TODO exit here more gracefully
+            return null
+        }
+
+        return(fileToWrite)
     }
 
     public fun sendResults(which : ClassActions.FileType)
