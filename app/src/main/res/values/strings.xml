@@ -75,6 +75,11 @@
     <string name="timer_stopped_notice">The results of this observation have not been saved. You need to click on the mail button to send the results so that they can be shared. You can email them to your self so that you can retrieve them on another computer.\n\nThe next time you run the timer these results will be deleted.</string>
     <string name="timer_continue_button">Continue</string>
 
+    <!-- Strings for the error dialog when someone presses the email button at a bad time -->
+    <string name="email_cannot_send_timer_on">The timer is active, and a current file cannot be sent. Please stop the timer before trying to send the current observations.</string>
+    <string name="email_cannot_send_title">Cannot send a file</string>
+    <string name="email_cannot_send_resume">Resume</string>
+
     <!-- Strings for the help screen 0-->
     <string name="help_title_bar">Help</string>
     <string name="help_page"><![CDATA[

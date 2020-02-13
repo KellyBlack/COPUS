@@ -27,6 +27,8 @@ package org.cyclismo.copus
 //import com.google.android.material.snackbar.Snackbar
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -323,12 +325,25 @@ class MainActivity : AppCompatActivity(),
         {
             // The timer is running. post a message saying to stop
             // the timer before trying to save.
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.apply {
+                setPositiveButton(R.string.email_cannot_send_resume,
+                    DialogInterface.OnClickListener { dialog, id ->
+                    })
+            }
+            builder.setMessage(R.string.email_cannot_send_timer_on)
+                .setTitle(resources.getString(R.string.email_cannot_send_title))
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
 
-            return
         }
-        val decideFileType = DecideTableOrFlatCSV()
-        val fragmentManager = supportFragmentManager
-        decideFileType.show(fragmentManager, "decideFileType")
+
+        else
+        {
+            val decideFileType = DecideTableOrFlatCSV()
+            val fragmentManager = supportFragmentManager
+            decideFileType.show(fragmentManager, "decideFileType")
+        }
     }
 
     public fun sendResults(which : ClassActions.FileType)
