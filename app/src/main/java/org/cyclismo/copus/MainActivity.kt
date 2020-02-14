@@ -61,9 +61,9 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(),
     ConfirmDeleteCurrentObservation.DeleteNoticeDialogListener,
-    StopTimerDialog.StopNoticeDialogListener,
+    StopTimerDialog.StopNoticeDialogListener
     //Runnable,
-    DecideTableOrFlatCSV.DecideTypeCSVFile
+    //DecideTableOrFlatCSV.DecideTypeCSVFile
 
 {
 
@@ -309,19 +309,6 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun onPrintTableCSV(dialog: DialogFragment?)
-    {
-        // Called in response to the user hitting the email dialog.
-        // The user wants to email the csv file as a table.
-        //sendResults(ClassActions.FileType.TABLE)
-    }
-
-    override fun onPrintFlatCSV(dialog : DialogFragment?)
-    {
-        // Called in response to the user hitting the email dialog.
-        // The user wants to email the csv file as a flat file.
-        //sendResults(ClassActions.FileType.FLAT)
-    }
 
     private fun decideFileType()
     {
