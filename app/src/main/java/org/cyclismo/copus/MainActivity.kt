@@ -51,6 +51,8 @@ import java.lang.RuntimeException
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+
 //import java.util.concurrent.ScheduledThreadPoolExecutor
 //import java.util.concurrent.TimeUnit
 
@@ -71,6 +73,8 @@ class MainActivity : AppCompatActivity(),
 
     private var timerRunning : Boolean = false
     private var baseFileName : String = ""
+    private var flatFile     : File? = null
+    private var tableFile    : File? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -294,8 +298,8 @@ class MainActivity : AppCompatActivity(),
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
                 // Save the results to a flat file and a table
-                saveCurrentObservation(ClassActions.FileType.FLAT,"_flat")
-                saveCurrentObservation(ClassActions.FileType.TABLE,"_table")
+                flatFile  = saveCurrentObservation(ClassActions.FileType.FLAT,"_flat")
+                tableFile = saveCurrentObservation(ClassActions.FileType.TABLE,"_table")
 
                 // Stop the timer and let the user know that nothing has been saved yet.
                 val stopTimerNotice = StopTimerDialog()
@@ -309,14 +313,14 @@ class MainActivity : AppCompatActivity(),
     {
         // Called in response to the user hitting the email dialog.
         // The user wants to email the csv file as a table.
-        sendResults(ClassActions.FileType.TABLE)
+        //sendResults(ClassActions.FileType.TABLE)
     }
 
     override fun onPrintFlatCSV(dialog : DialogFragment?)
     {
         // Called in response to the user hitting the email dialog.
         // The user wants to email the csv file as a flat file.
-        sendResults(ClassActions.FileType.FLAT)
+        //sendResults(ClassActions.FileType.FLAT)
     }
 
     private fun decideFileType()
@@ -359,9 +363,11 @@ class MainActivity : AppCompatActivity(),
         }
         else
         {
-            val decideFileType = DecideTableOrFlatCSV()
-            val fragmentManager = supportFragmentManager
-            decideFileType.show(fragmentManager, "decideFileType")
+            // TODO - just save the file and display a message.
+            //val decideFileType = DecideTableOrFlatCSV()
+            //val fragmentManager = supportFragmentManager
+            //decideFileType.show(fragmentManager, "decideFileType")
+            sendResults()
         }
     }
 
@@ -385,7 +391,34 @@ class MainActivity : AppCompatActivity(),
         return(fileToWrite)
     }
 
-    public fun sendResults(which : ClassActions.FileType)
+    fun getDirectory() : File?
+    {
+
+        var directory: File
+        try {
+            directory = filesDir
+        } catch (e: NullPointerException) {
+            return(null)
+        }
+
+        val directoryFile: File = File(directory, "observations")
+        return(directoryFile)
+    }
+
+    private fun getFile(basename: String,suffix: String) : File?
+    {
+        var directoryFile: File? = getDirectory()
+        if(directoryFile == null)
+            return(null)
+
+        val fileName = "${basename}${suffix}"
+        val fileInfo = File(directoryFile,fileName)
+        if(fileInfo.exists())
+            return(fileInfo)
+        return(null)
+    }
+
+    public fun sendResults()
     {
 
         // The user hit the email button and responded to the window asking what kind of file
@@ -395,17 +428,14 @@ class MainActivity : AppCompatActivity(),
         // Get the fragment that keeps track of the user input. Save the
         // results in one string that has the information in the necessary
         // format.
-        val observationFragment = supportFragmentManager.findFragmentById(R.id.observationFragment) as ClassActions
-        val allObservations : String = observationFragment.observationsAsString(which)
-        var fileToWrite : File? = saveCurrentObservation(which)
 
-        if(fileToWrite!=null)
+        if((flatFile!=null) || (tableFile!=null))
         {
             // The file has been saved. Now call up the email application and
             // make sure it knows the file to include as an attachment.
             val settings  = PreferenceManager.getDefaultSharedPreferences(this)
             val toAddress : String = settings.getString("defaultEmailTo","") ?: ""
-            val email = Intent(Intent.ACTION_SEND)
+            val email = Intent(Intent.ACTION_SEND_MULTIPLE)
             email.putExtra(Intent.EXTRA_SUBJECT, "COPUS Observation")
             email.putExtra(Intent.EXTRA_EMAIL,arrayOf(toAddress))
             email.putExtra(
@@ -413,18 +443,53 @@ class MainActivity : AppCompatActivity(),
                 "The attachement includes the results from the observation."
             )
             email.setType("message/rfc822")
+
+            var fileURIs : ArrayList<Uri> = ArrayList<Uri>()
             try {
-                val contentUri: Uri = getUriForFile(
-                    applicationContext,
-                    "org.cyclismo.copus.fileprovider",
-                    fileToWrite
-                )
-                grantUriPermission(
-                    "org.cyclismo.copus.fileprovider",
-                    contentUri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-                email.putExtra(Intent.EXTRA_STREAM, contentUri)
+                try {
+
+                    if (flatFile != null) {
+                        val contentUriFlat: Uri = getUriForFile(
+                            applicationContext,
+                            "org.cyclismo.copus.fileprovider",
+                            flatFile!!
+                        )
+                        grantUriPermission(
+                            "org.cyclismo.copus.fileprovider",
+                            contentUriFlat,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        )
+                        //email.putExtra(Intent.EXTRA_STREAM, contentUriFlat)
+                        fileURIs.add(contentUriFlat)
+                    }
+                }
+                catch (e: NullPointerException)
+                {
+
+                }
+
+                try{
+                    if(tableFile!=null) {
+                        val contentUriTable: Uri = getUriForFile(
+                            applicationContext,
+                            "org.cyclismo.copus.fileprovider",
+                            tableFile!!
+                        )
+                        grantUriPermission(
+                            "org.cyclismo.copus.fileprovider",
+                            contentUriTable,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        )
+                        //email.putExtra(Intent.EXTRA_STREAM, contentUriTable)
+                        fileURIs.add(contentUriTable)
+                    }
+                }
+                catch (e:NullPointerException)
+                {
+
+                }
+
+                email.putParcelableArrayListExtra(Intent.EXTRA_STREAM,fileURIs)
                 startActivity(Intent.createChooser(email, "Choose an Email client :"))
             }
             catch (e : IllegalArgumentException)
